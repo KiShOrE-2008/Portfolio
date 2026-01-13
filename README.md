@@ -24,7 +24,7 @@ This project features a clean, dark-themed UI with interactive animations and a 
 
 1. **Clone the repository** (or download usage files):<br>
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/KiShOrE-2008/Link_web
    ```
 2. **Open the project**:<br>
    Navigate to the project directory and open `index.html` in your preferred web browser.<br>
