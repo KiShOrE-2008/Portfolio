@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (menuToggle && navMenu) {
         menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('open');
+            const isOpen = menuToggle.classList.toggle('open');
             navMenu.classList.toggle('open');
+            document.body.classList.toggle('no-scroll', isOpen);
         });
 
         // Close menu when a link is clicked
@@ -15,7 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('open');
                 navMenu.classList.remove('open');
+                document.body.classList.remove('no-scroll');
             });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('open') && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                menuToggle.classList.remove('open');
+                navMenu.classList.remove('open');
+                document.body.classList.remove('no-scroll');
+            }
         });
     }
 
@@ -69,44 +80,47 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(type, newTextDelay - 1000);
     }
 
-    // 3. Dynamic 3D Tilt Effect on Cards
-    const tiltCards = document.querySelectorAll('.tilt-card');
-    
-    tiltCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left; // x coordinate within element
-            const y = e.clientY - rect.top;  // y coordinate within element
-            
-            // Calculate normalized values (-0.5 to 0.5)
-            const xc = rect.width / 2;
-            const yc = rect.height / 2;
-            
-            // Calculate tilt degrees (max 15 degrees)
-            const angleX = -((y - yc) / yc) * 15;
-            const angleY = ((x - xc) / xc) * 15;
-            
-            // Apply transformations
-            card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.02)`;
-        });
+    // 3. Dynamic 3D Tilt Effect on Cards (only on hover-capable devices)
+    if (window.matchMedia('(hover: hover)').matches) {
+        const tiltCards = document.querySelectorAll('.tilt-card');
         
-        card.addEventListener('mouseleave', () => {
-            // Restore original transform state smoothly
-            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x coordinate within element
+                const y = e.clientY - rect.top;  // y coordinate within element
+                
+                // Calculate normalized values (-0.5 to 0.5)
+                const xc = rect.width / 2;
+                const yc = rect.height / 2;
+                
+                // Calculate tilt degrees (max 15 degrees)
+                const angleX = -((y - yc) / yc) * 15;
+                const angleY = ((x - xc) / xc) * 15;
+                
+                // Apply transformations
+                card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                // Restore original transform state smoothly
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            });
         });
-    });
+    }
 
-    // 4. Background Radial Glow Follower
-    const radialGlow1 = document.getElementById('radialGlow1');
-    const radialGlow2 = document.getElementById('radialGlow2');
+    // 4. Background Radial Glow Follower (only on hover-capable devices)
+    if (window.matchMedia('(hover: hover)').matches) {
+        const radialGlow1 = document.getElementById('radialGlow1');
 
-    document.addEventListener('mousemove', (e) => {
-        const { clientX, clientY } = e;
-        
-        if (radialGlow1) {
-            radialGlow1.style.transform = `translate(${clientX - window.innerWidth / 2}px, ${clientY - window.innerHeight / 2}px)`;
-        }
-    });
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            
+            if (radialGlow1) {
+                radialGlow1.style.transform = `translate(${clientX - window.innerWidth / 2}px, ${clientY - window.innerHeight / 2}px)`;
+            }
+        });
+    }
 
     // 5. Skills Tab Selection switcher
     const tabBtns = document.querySelectorAll('.tab-btn');
