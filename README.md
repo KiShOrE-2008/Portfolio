@@ -24,7 +24,7 @@ This project features a clean, dark-themed UI with interactive animations and a 
 
 1. **Clone the repository** (or download usage files):<br>
    ```bash
-   git clone https://github.com/KiShOrE-2008/Link_web
+   git clone https://github.com/KiShOrE-2008/Portfolio
    ```
 2. **Open the project**:<br>
    Navigate to the project directory and open `index.html` in your preferred web browser.<br>
@@ -40,4 +40,4 @@ This project features a clean, dark-themed UI with interactive animations and a 
 ## 📄 License<br>
 
 This project is open source and available for personal and educational use.<br>
-#   L i n k _ w e b <br>
+#   P o r t f o l i o <br>
