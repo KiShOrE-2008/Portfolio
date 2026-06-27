@@ -1212,7 +1212,8 @@ body {
 
 .modal-content-wrapper {
     position: relative;
-    max-width: 95vw;
+    width: 90%;
+    max-width: 900px;
     max-height: 90vh;
     display: flex;
     flex-direction: column;
@@ -1226,15 +1227,13 @@ body {
 }
 
 .modal-image {
-    max-width: 100%;
-    max-height: 78vh;
-    width: auto;
-    height: auto;
+    width: 100%;
+    max-height: 75vh;
     display: block;
+    object-fit: contain;
     border-radius: 12px;
     border: 1px solid var(--border-hover);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--accent-blue-glow);
-    object-fit: contain;
 }
 
 .modal-caption {
