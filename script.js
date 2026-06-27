@@ -219,4 +219,95 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1200);
         });
     }
+
+    // 8. Image Modal Lightbox Logic (With Multi-Image Carousel Support)
+    const clickableCards = document.querySelectorAll('.clickable-card');
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalCaption');
+    const modalClose = document.getElementById('modalClose');
+    const modalPrev = document.getElementById('modalPrev');
+    const modalNext = document.getElementById('modalNext');
+    const modalCounter = document.getElementById('modalCounter');
+
+    // Define the list of 7 internship images
+    const internshipImages = [];
+    for (let i = 1; i <= 7; i++) {
+        internshipImages.push({
+            src: `internship_${i}.jpg`,
+            caption: `Uttar Pradesh Police Cyber Security Internship - Photo ${i}`
+        });
+    }
+
+    let currentImgIndex = 0;
+
+    if (imageModal && modalImage && modalClose && modalPrev && modalNext && modalCounter) {
+        clickableCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Initialize at first image when card is clicked
+                currentImgIndex = 0;
+                updateModalContent();
+                
+                // Show modal with animation
+                imageModal.style.display = 'flex';
+                imageModal.offsetHeight; // force reflow
+                imageModal.classList.add('open');
+                imageModal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        const updateModalContent = () => {
+            const currentImg = internshipImages[currentImgIndex];
+            modalImage.src = currentImg.src;
+            modalCaption.textContent = currentImg.caption;
+            modalCounter.textContent = `${currentImgIndex + 1} / ${internshipImages.length}`;
+        };
+
+        const showNextImage = () => {
+            currentImgIndex = (currentImgIndex + 1) % internshipImages.length;
+            updateModalContent();
+        };
+
+        const showPrevImage = () => {
+            currentImgIndex = (currentImgIndex - 1 + internshipImages.length) % internshipImages.length;
+            updateModalContent();
+        };
+
+        modalNext.addEventListener('click', showNextImage);
+        modalPrev.addEventListener('click', showPrevImage);
+
+        const closeModal = () => {
+            imageModal.classList.remove('open');
+            imageModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            
+            setTimeout(() => {
+                if (!imageModal.classList.contains('open')) {
+                    imageModal.style.display = 'none';
+                    modalImage.src = '';
+                }
+            }, 300);
+        };
+
+        modalClose.addEventListener('click', closeModal);
+        
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (imageModal.classList.contains('open')) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                } else if (e.key === 'ArrowRight') {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                }
+            }
+        });
+    }
 });

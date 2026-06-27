@@ -933,6 +933,407 @@ body {
     color: var(--text-muted);
 }
 
+/* ==========================================================================
+   Experience Section (Timeline)
+   ========================================================================== */
+.experience-section {
+    position: relative;
+}
+
+.timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* Vertical track line */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple));
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    box-shadow: 0 0 15px var(--accent-blue-glow);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    width: 100%;
+    padding-left: 55px;
+    padding-bottom: 2.5rem;
+}
+
+/* Indicator Node Circle */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--bg-dark);
+    border: 3px solid var(--accent-blue);
+    left: 14px;
+    top: 36px;
+    z-index: 1;
+    box-shadow: 0 0 10px var(--accent-blue);
+    transition: var(--transition-smooth);
+}
+
+.timeline-item:hover::after {
+    background-color: var(--accent-purple);
+    border-color: var(--text-primary);
+    box-shadow: 0 0 15px var(--accent-purple);
+    transform: scale(1.2);
+}
+
+.timeline-content {
+    padding: 2.5rem;
+    position: relative;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.time-period {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    background: rgba(199, 89, 48, 0.05);
+    padding: 0.2rem 0.8rem;
+    border-radius: 50px;
+    border: 1px solid var(--accent-blue-glow);
+}
+
+.location {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.role-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+}
+
+.company-name {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-purple);
+    margin-bottom: 1.5rem;
+}
+
+.internship-badge {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    margin-bottom: 1.2rem;
+}
+
+.experience-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.experience-bullets li {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.experience-bullets li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Certifications Section
+   ========================================================================== */
+.certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    gap: 1rem;
+}
+
+.cert-card {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 16px;
+}
+
+.cert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.cert-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.cert-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.cert-authority {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.cert-date {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-light);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+}
+
+.cert-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.cert-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    line-height: 1.4;
+}
+
+.cert-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+}
+
+.cert-footer {
+    border-top: 1px solid var(--border-light);
+    padding-top: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cert-id, .cert-status {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+}
+
+.cert-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.cert-link::after {
+    content: ' ↗';
+    transition: var(--transition-smooth);
+}
+
+.cert-link:hover {
+    color: var(--text-primary);
+}
+
+.cert-link:hover::after {
+    transform: translate(2px, -2px);
+}
+/* Image Modal / Lightbox */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(6, 9, 17, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-modal.open {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content-wrapper {
+    position: relative;
+    max-width: 85%;
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-modal.open .modal-content-wrapper {
+    transform: scale(1);
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--border-hover);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--accent-blue-glow);
+    object-fit: contain;
+}
+
+.modal-caption {
+    margin-top: 1rem;
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    color: var(--text-secondary);
+    font-size: 2.5rem;
+    font-weight: 300;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+/* Style for clickable experience card */
+.clickable-card {
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.clickable-card:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 15px 40px -10px var(--accent-blue-glow);
+}
+
+.view-cert-badge {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-purple);
+    border: 1px solid var(--accent-purple-glow);
+    background: rgba(176, 114, 25, 0.05);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: var(--transition-smooth);
+}
+
+.clickable-card:hover .view-cert-badge {
+    background: var(--accent-purple-glow);
+    color: var(--text-primary);
+    box-shadow: 0 0 10px var(--accent-purple-glow);
+}
+
+.modal-prev, .modal-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-radius: 12px;
+    z-index: 2010;
+    transition: var(--transition-smooth);
+    user-select: none;
+}
+
+.modal-prev {
+    left: 2rem;
+}
+
+.modal-next {
+    right: 2rem;
+}
+
+.modal-prev:hover, .modal-next:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 15px var(--accent-blue-glow);
+}
+
+.modal-counter {
+    position: absolute;
+    top: -2.5rem;
+    left: 0;
+    font-family: var(--font-heading);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
 /* CSS Intersection Observer Animations */
 .section {
     opacity: 0;
@@ -986,6 +1387,23 @@ body.no-scroll {
 }
 
 @media (max-width: 768px) {
+    .modal-prev, .modal-next {
+        font-size: 1.5rem;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+    }
+    .modal-prev {
+        left: 0.8rem;
+    }
+    .modal-next {
+        right: 0.8rem;
+    }
+    .modal-close {
+        top: 1rem;
+        right: 1.2rem;
+        font-size: 2rem;
+    }
+
     .menu-toggle {
         display: flex;
     }
@@ -1028,6 +1446,8 @@ body.no-scroll {
     .nav-menu .nav-link:nth-child(3) { transition-delay: 0.15s; }
     .nav-menu .nav-link:nth-child(4) { transition-delay: 0.20s; }
     .nav-menu .nav-link:nth-child(5) { transition-delay: 0.25s; }
+    .nav-menu .nav-link:nth-child(6) { transition-delay: 0.30s; }
+    .nav-menu .nav-link:nth-child(7) { transition-delay: 0.35s; }
 
     /* Menu toggle button active animation states */
     .menu-toggle.open span:nth-child(1) {
@@ -1059,7 +1479,7 @@ body.no-scroll {
         min-height: 3.2rem;
     }
     
-    .about-card, .contact-card {
+    .about-card, .contact-card, .timeline-content, .cert-card {
         padding: 2rem;
     }
 }
@@ -1101,7 +1521,7 @@ body.no-scroll {
         padding: 6rem 1.2rem 4rem;
     }
     
-    .about-card, .contact-card {
+    .about-card, .contact-card, .timeline-content, .cert-card {
         padding: 1.5rem;
     }
 
