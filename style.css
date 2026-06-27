@@ -1073,6 +1073,83 @@ body {
 }
 
 /* ==========================================================================
+   Education Section
+   ========================================================================== */
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr));
+    gap: 2.5rem;
+}
+
+.education-card {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.edu-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.edu-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+}
+
+.edu-period {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    background: rgba(199, 89, 48, 0.05);
+    padding: 0.2rem 0.8rem;
+    border-radius: 50px;
+    border: 1px solid var(--accent-blue-glow);
+}
+
+.edu-location {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.edu-degree {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+}
+
+.edu-institution {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-purple);
+    margin-bottom: 1.5rem;
+}
+
+.edu-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+/* ==========================================================================
    Certifications Section
    ========================================================================== */
 .certs-grid {
@@ -1450,6 +1527,7 @@ body.no-scroll {
     .nav-menu .nav-link:nth-child(5) { transition-delay: 0.25s; }
     .nav-menu .nav-link:nth-child(6) { transition-delay: 0.30s; }
     .nav-menu .nav-link:nth-child(7) { transition-delay: 0.35s; }
+    .nav-menu .nav-link:nth-child(8) { transition-delay: 0.40s; }
 
     /* Menu toggle button active animation states */
     .menu-toggle.open span:nth-child(1) {
@@ -1481,7 +1559,7 @@ body.no-scroll {
         min-height: 3.2rem;
     }
     
-    .about-card, .contact-card, .timeline-content, .cert-card {
+    .about-card, .contact-card, .timeline-content, .cert-card, .education-card {
         padding: 2rem;
     }
 }
@@ -1523,7 +1601,7 @@ body.no-scroll {
         padding: 6rem 1.2rem 4rem;
     }
     
-    .about-card, .contact-card, .timeline-content, .cert-card {
+    .about-card, .contact-card, .timeline-content, .cert-card, .education-card {
         padding: 1.5rem;
     }
 
