@@ -1,43 +1,60 @@
-# Profile Link Dashboard<br>
+# 🌐 Premium Cyber-Dark Portfolio Website
 
-A modern, responsive personal dashboard designed to showcase professional profiles and coding achievements.<br>
-This project features a clean, dark-themed UI with interactive animations and a 3D tilt effect essential for a premium user experience.<br>
+A modern, responsive, and highly interactive personal portfolio designed for a **Cybersecurity, Networking, and Software Development** profile. Built with glassmorphism aesthetics, dynamic glow effects, 3D mouse tilt cards, and optimized responsive layouts.
 
-## ✨ Features<br>
+Live Demo: **[kishore-2008.github.io/Portfolio](https://kishore-2008.github.io/Portfolio/)**
 
-- **Responsive Design**: Adapts seamlessly to different screen sizes, from mobile devices to desktops.<br>
-- **Interactive UI**:<br>
-  - **3D Tilt Effect**: The profile card tilts dynamically based on mouse movement.<br>
-  - **Animations**: Smooth fade-in and slide-in effects for the card and links.<br>
-  - **Hover Effects**: glowing accents and transitions on interactive elements.<br>
-- **Centralized Links**: Quick access to GitHub, Codelio, LinkedIn, LeetCode, SkillRack, and Email.<br>
-- **Modern Aesthetics**: Uses a glassmorphism inspired design with a dynamic background.<br>
+---
 
-## 🛠️ Technologies Used<br>
+## ✨ Features
 
-- **HTML5**: For semantic structure.<br>
-- **CSS3**: For styling, animations, and responsive layout (Vanilla CSS).<br>
-- **JavaScript**: For the 3D tilt logic and interactivity (Vanilla JS).<br>
-- **Font**: [Outfit](https://fonts.google.com/specimen/Outfit) from Google Fonts.<br>
+- **🛡️ Cybersecurity & Networking Showcase**: Dedicated section detailing technical capabilities (Wireshark traffic analysis, penetration testing, cybercrime investigation, TCP/IP, digital forensics, etc.).
+- **📈 Uttar Pradesh Police Cyber Internship Timeline**: Vertical glowing experience timeline node showing internship milestones, integrated with a keyboard-navigable 7-photo slide lightbox gallery popup.
+- **🎓 Interactive Education Section**: Responsive glassmorphic layouts mapping academic credentials at **Chennai Institute of Technology** and **Shri Vidhya Mandhir**, highlighting specialized coursework (IIT Madras Data Science & AI).
+- **🥇 Licenses & Certifications Grid**: Compact glassmorphic cards display for Cisco, Forage, HackerRank, and Hack & Fix certifications.
+- **🎛️ Interactive Animations & 3D Tilt**: 
+  - Mouse-position tracking 3D tilt effects (`Vanilla JS`) applied to sections and cards.
+  - Smooth intersection observers for fade-in scroll triggers.
+  - Radial pointer glow-tracking background overlay.
+- **📱 Fully Responsive**: Custom mobile drawer menus and responsive media padding overrides across all grid systems.
 
-## 🚀 How to Use<br>
+---
 
-1. **Clone the repository** (or download usage files):<br>
-   ```bash
-   git clone https://github.com/KiShOrE-2008/Portfolio
-   ```
-2. **Open the project**:<br>
-   Navigate to the project directory and open `index.html` in your preferred web browser.<br>
+## 🛠️ Tech Stack & Utilities
 
-   > **Tip**: For the best experience, use a modern browser like Chrome, Edge, or Firefox.<br>
+- **Core**: HTML5, Vanilla CSS3 (Custom Variables, CSS Grid, Flexbox), Vanilla JavaScript (ES6+).
+- **Aesthetics**: Glassmorphism, CSS Custom Gradients, Backdrop Blur Filters.
+- **Fonts**: [Outfit](https://fonts.google.com/specimen/Outfit) & [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) from Google Fonts.
+- **Interactions**: Vanilla mousemove tilt handlers, viewport IntersectionObserver API.
 
-## 🎨 Customization<br>
+---
 
-- **Profile Image**: Replace the SVG placeholder in `index.html` with your own `<img>` tag.<br>
-- **Links**: Update the `href` attributes in the `<nav class="links">` section of `index.html` with your own profile URLs.<br>
-- **Colors**: Modify the CSS variables in `:root` within `style.css` to change the color scheme.<br>
+## 🚀 Getting Started
 
-## 📄 License<br>
+### 1. Clone the Repository
+```bash
+git clone https://github.com/KiShOrE-2008/Portfolio.git
+```
 
-This project is open source and available for personal and educational use.<br>
-#   P o r t f o l i o <br>
+### 2. Open Locally
+Navigate to the directory and launch `index.html` in Chrome, Firefox, or Edge.
+*Or run a local server (e.g., Live Server extension in VS Code).*
+
+---
+
+## 📁 Repository Structure
+```plaintext
+Portfolio/
+├── images/               # Local subdirectory for internship photos
+│   ├── internship_1.jpg  # Photo 1 (Certificate)
+│   └── ...
+├── index.html            # Main site structure & layouts
+├── style.css             # Glassmorphism design tokens & media queries
+├── script.js            # Custom 3D tilt, lightboxes, & sliders
+└── README.md             # Project documentation
+```
+
+---
+
+## 📄 License
+This repository is open-source and available for personal and educational use.
