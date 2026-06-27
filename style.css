@@ -1572,6 +1572,10 @@ body.no-scroll {
         margin-bottom: 2.5rem;
     }
     
+    .skills-tabs .tab-btn:last-child {
+        grid-column: span 2;
+    }
+    
     .tab-btn {
         padding: 0.6rem 0.8rem;
         text-align: center;
