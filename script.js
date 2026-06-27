@@ -230,16 +230,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalNext = document.getElementById('modalNext');
     const modalCounter = document.getElementById('modalCounter');
 
-    // Define the list of 7 internship images (Cloud Hosted)
-    const internshipImages = [
-        { src: "https://i.postimg.cc/rdXj07DC/internship-1.jpg", caption: "Uttar Pradesh Police Cyber Security Internship - Photo 1" },
-        { src: "https://i.postimg.cc/wt82yn1F/internship-2.jpg", caption: "Uttar Pradesh Police Cyber Security Internship - Photo 2" },
-        { src: "https://i.postimg.cc/G8bjzYJm/internship-3.jpg", caption: "Uttar Pradesh Police Cyber Security Internship - Photo 3" },
-        { src: "https://i.postimg.cc/KKPNnQTT/internship-4.jpg", caption: "Uttar Pradesh Police Cyber Security Internship - Photo 4" },
-        { src: "https://i.postimg.cc/sBYcpKWk/internship-5.jpg", caption: "Uttar Pradesh Police Cyber Security Internship - Photo 5" },
-        { src: "https://i.postimg.cc/Kkm5QL76/internship-6.jpg", caption: "Uttar Pradesh Police Cyber Security Internship - Photo 6" },
-        { src: "https://i.postimg.cc/LYmVvfBX/internship-7.jpg", caption: "Uttar Pradesh Police Cyber Security Internship - Photo 7" }
-    ];
+    // Define the list of 7 internship images
+    const internshipImages = [];
+    for (let i = 1; i <= 7; i++) {
+        internshipImages.push({
+            src: `internship_${i}.jpg`,
+            caption: `Uttar Pradesh Police Cyber Security Internship - Photo ${i}`
+        });
+    }
 
     let currentImgIndex = 0;
 
