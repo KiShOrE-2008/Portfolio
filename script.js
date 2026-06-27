@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const internshipImages = [];
     for (let i = 1; i <= 7; i++) {
         internshipImages.push({
-            src: `internship_${i}.jpg`,
+            src: `images/internship_${i}.jpg`,
             caption: `Uttar Pradesh Police Cyber Security Internship - Photo ${i}`
         });
     }
