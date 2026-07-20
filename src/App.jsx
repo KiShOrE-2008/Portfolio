@@ -11,8 +11,11 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import LightboxModal from './components/LightboxModal';
+import Preloader from './components/Preloader';
+import NetworkBackground from './components/NetworkBackground';
 
 export default function App() {
+    const [isLoading, setIsLoading] = useState(true);
     const [activeSection, setActiveSection] = useState('hero');
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
@@ -73,8 +76,12 @@ export default function App() {
 
     return (
         <div className="app-container">
+            {isLoading && (
+                <Preloader onComplete={() => setIsLoading(false)} />
+            )}
             {/* Background elements */}
             <div className="background-animation"></div>
+            <NetworkBackground />
             <div className="radial-glow glow-1" id="radialGlow1" ref={glowRef1}></div>
             <div className="radial-glow glow-2" id="radialGlow2"></div>
 

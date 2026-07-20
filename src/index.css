@@ -1624,3 +1624,205 @@ body.no-scroll {
         font-size: 1.3rem;
     }
 }
+
+/* Cyber Preloader Styles */
+.cyber-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #060911;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    color: var(--accent-blue);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cyber-preloader.fade-out {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+}
+
+.preloader-bg-matrix {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 20%, #060911 80%),
+                linear-gradient(rgba(18, 150, 243, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(18, 150, 243, 0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 20px 20px, 20px 20px;
+    z-index: 1;
+    opacity: 0.4;
+}
+
+.preloader-content {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 600px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid var(--accent-blue-glow);
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px var(--accent-blue-glow);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.terminal-header {
+    background: rgba(30, 41, 59, 0.5);
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.terminal-dot.red { background-color: #ef4444; }
+.terminal-dot.yellow { background-color: #f59e0b; }
+.terminal-dot.green { background-color: #10b981; }
+
+.terminal-title {
+    margin-left: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.terminal-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.cyber-logo-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 0.5rem;
+    color: var(--accent-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cyber-shield-svg {
+    width: 60px;
+    height: 60px;
+    filter: drop-shadow(0 0 8px var(--accent-blue));
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.cyber-scanner {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-blue);
+    box-shadow: 0 0 8px var(--accent-blue);
+    top: 0;
+    left: 0;
+    animation: scan 2s infinite linear;
+}
+
+@keyframes scan {
+    0% { top: 10%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 90%; opacity: 0; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 15px var(--accent-blue)); }
+}
+
+.console-logs {
+    height: 120px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: left;
+    background: rgba(6, 9, 17, 0.6);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    scrollbar-width: none;
+}
+
+.console-logs::-webkit-scrollbar {
+    display: none;
+}
+
+.console-line {
+    border-left: 2px solid var(--accent-blue);
+    padding-left: 8px;
+}
+
+.console-line.success {
+    color: var(--accent-green);
+    border-left-color: var(--accent-green);
+    font-weight: bold;
+    text-shadow: 0 0 8px var(--accent-green);
+}
+
+.progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.progress-percent {
+    color: var(--accent-blue);
+    font-weight: bold;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    box-shadow: 0 0 8px var(--accent-blue);
+    transition: width 0.1s ease-out;
+}
+
+/* Network Nodes Canvas Background */
+.network-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2; /* Runs behind text content, in front of the color gradient background */
+    pointer-events: none;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+}

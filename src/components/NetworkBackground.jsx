@@ -1,0 +1,154 @@
+import React, { useEffect, useRef } from 'react';
+
+export default function NetworkBackground() {
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let animationFrameId;
+
+        // Configuration
+        const particleCount = 80;
+        const connectionDistance = 120;
+        const mouseRadius = 150;
+        const particles = [];
+        const mouse = { x: null, y: null };
+
+        // Handle resize
+        const handleResize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        // Handle mouse move
+        const handleMouseMove = (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        };
+
+        const handleMouseLeave = () => {
+            mouse.x = null;
+            mouse.y = null;
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseleave', handleMouseLeave);
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                // Speeds (slow, floating drift)
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5 + 1; // 1px to 2.5px
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+
+                // Mouse interaction (slight push away)
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = this.x - mouse.x;
+                    const dy = this.y - mouse.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < mouseRadius) {
+                        const force = (mouseRadius - dist) / mouseRadius;
+                        const angle = Math.atan2(dy, dx);
+                        // Gently nudge the particle
+                        this.x += Math.cos(angle) * force * 1.2;
+                        this.y += Math.sin(angle) * force * 1.2;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.4)'; // Cyan-blue particle
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation Loop
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update & Draw particles
+            particles.forEach((p) => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw connections between nodes
+            for (let i = 0; i < particles.length; i++) {
+                const p1 = particles[i];
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < connectionDistance) {
+                        // Opacity fades as distance increases
+                        const opacity = (1 - dist / connectionDistance) * 0.18;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`; // Purple connection line
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+
+                // Draw connection to mouse pointer
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = p1.x - mouse.x;
+                    const dy = p1.y - mouse.y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < mouseRadius) {
+                        const opacity = (1 - dist / mouseRadius) * 0.25;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${opacity})`; // Cyan connector to mouse
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseleave', handleMouseLeave);
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, []);
+
+    return <canvas ref={canvasRef} className="network-canvas" />;
+}
