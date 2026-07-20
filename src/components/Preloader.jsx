@@ -1,114 +1,141 @@
 import React, { useState, useEffect } from 'react';
-
-const bootSequence = [
-    { text: "> INITIALIZING SHIELD PORT PROTOCOLS...", delay: 100 },
-    { text: "> ESTABLISHING TCP/IP DIAGNOSTICS...", delay: 500 },
-    { text: "> STATUS: 3-WAY SYN-ACK HANDSHAKE SECURE", delay: 900 },
-    { text: "> RESOLVING CISCO VPN TUNNEL ACCESS...", delay: 1300 },
-    { text: "> LOADING POLICE CYBER CRIMES DATA CORRELATOR...", delay: 1700 },
-    { text: "> MOUNTING NETWORK PACKET ANALYZER...", delay: 2100 },
-    { text: "> ACCESS GRANTED. SYSTEM SECURE.", delay: 2500 }
-];
+import NetworkBackground from './NetworkBackground';
 
 export default function Preloader({ onComplete }) {
-    const [logs, setLogs] = useState([]);
     const [progress, setProgress] = useState(0);
     const [fadeOut, setFadeOut] = useState(false);
+    const [statusText, setStatusText] = useState("Initializing portfolio modules...");
 
     useEffect(() => {
-        // Fast counting progress simulation (takes ~2.5s)
+        const statuses = [
+            "Initializing portfolio modules...",
+            "Loading project directory...",
+            "Assembling interface assets...",
+            "Optimizing connections...",
+            "Connection established"
+        ];
+        let statusIndex = 0;
+        
+        const statusInterval = setInterval(() => {
+            statusIndex = (statusIndex + 1) % statuses.length;
+            if (progress < 100) {
+                setStatusText(statuses[statusIndex]);
+            }
+        }, 800);
+
         const progressInterval = setInterval(() => {
             setProgress((prev) => {
-                if (prev >= 100) {
+                const jump = Math.random() > 0.8 ? Math.floor(Math.random() * 12) + 4 : Math.floor(Math.random() * 3) + 1;
+                const next = prev + jump;
+                if (next >= 100) {
+                    setStatusText("Access Granted");
                     clearInterval(progressInterval);
                     return 100;
                 }
-                return prev + 4;
+                return next;
             });
         }, 100);
 
-        // Print log statements sequentially
-        const timeouts = [];
-        bootSequence.forEach((step) => {
-            const timeout = setTimeout(() => {
-                setLogs((prev) => [...prev, step.text]);
-            }, step.delay);
-            timeouts.push(timeout);
-        });
-
-        // Trigger fade out and complete
         const shutdownTimer = setTimeout(() => {
             setFadeOut(true);
-            const completeTimer = setTimeout(() => {
+            setTimeout(() => {
                 onComplete();
-            }, 800); // Match CSS fade-out animation length
-            timeouts.push(completeTimer);
-        }, 3200);
+            }, 800);
+        }, 3400);
 
         return () => {
             clearInterval(progressInterval);
+            clearInterval(statusInterval);
             clearTimeout(shutdownTimer);
-            timeouts.forEach(clearTimeout);
         };
-    }, [onComplete]);
+    }, [onComplete, progress]);
 
     return (
-        <div className={`cyber-preloader ${fadeOut ? 'fade-out' : ''}`}>
-            <div className="preloader-bg-matrix"></div>
-            <div className="preloader-content">
-                <div className="terminal-header">
-                    <span className="terminal-dot red"></span>
-                    <span className="terminal-dot yellow"></span>
-                    <span className="terminal-dot green"></span>
-                    <span className="terminal-title">sec_boot_sequence.sh</span>
+        <div className={`network-preloader-container ${fadeOut ? 'fade-out' : ''}`}>
+            {/* Blast Wave transition element */}
+            <div className="blast-wave"></div>
+
+            {/* Mesh Background running behind the preloader content */}
+            <div className="preloader-background">
+                <NetworkBackground />
+            </div>
+            
+            <div className="network-preloader-content">
+                {/* Sleek Constellation Node Logo */}
+                <div className="logo-wrapper">
+                    <svg viewBox="0 0 150 150" className="node-logo-svg" aria-label="Kishore K V Monogram Logo">
+                        <defs>
+                            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="var(--accent-blue)" />
+                                <stop offset="100%" stopColor="var(--accent-purple)" />
+                            </linearGradient>
+                            <filter id="logo-glow" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="4" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        {/* Connections (Interconnected Mesh Lines) */}
+                        <g className="mesh-lines" stroke="url(#logo-grad)" strokeWidth="1.2" opacity="0.6" fill="none">
+                            <line x1="75" y1="25" x2="125" y2="55" />
+                            <line x1="125" y1="55" x2="125" y2="95" />
+                            <line x1="125" y1="95" x2="75" y2="125" />
+                            <line x1="75" y1="125" x2="25" y2="95" />
+                            <line x1="25" y1="95" x2="25" y2="55" />
+                            <line x1="25" y1="55" x2="75" y2="25" />
+                            
+                            {/* Inner lines connecting to center */}
+                            <line x1="75" y1="75" x2="75" y2="25" className="inner-line-1" />
+                            <line x1="75" y1="75" x2="125" y2="55" className="inner-line-2" />
+                            <line x1="75" y1="75" x2="125" y2="95" className="inner-line-3" />
+                            <line x1="75" y1="75" x2="75" y2="125" className="inner-line-4" />
+                            <line x1="75" y1="75" x2="25" y2="95" className="inner-line-5" />
+                            <line x1="75" y1="75" x2="25" y2="55" className="inner-line-6" />
+                        </g>
+
+                        {/* Node dots */}
+                        <g fill="var(--bg-dark)" stroke="url(#logo-grad)" strokeWidth="1.5">
+                            <circle cx="75" cy="25" r="4.5" className="node-pulse dot-1" />
+                            <circle cx="125" cy="55" r="4.5" className="node-pulse dot-2" />
+                            <circle cx="125" cy="95" r="4.5" className="node-pulse dot-3" />
+                            <circle cx="75" cy="125" r="4.5" className="node-pulse dot-4" />
+                            <circle cx="25" cy="95" r="4.5" className="node-pulse dot-5" />
+                            <circle cx="25" cy="55" r="4.5" className="node-pulse dot-6" />
+                        </g>
+
+                        {/* Center glowing monogram node */}
+                        <circle cx="75" cy="75" r="16" fill="url(#logo-grad)" filter="url(#logo-glow)" opacity="0.15" />
+                        <circle cx="75" cy="75" r="12" fill="var(--bg-dark)" stroke="url(#logo-grad)" strokeWidth="1.5" />
+                        
+                        {/* Monogram Text */}
+                        <text x="75" y="79" 
+                              fill="url(#logo-grad)" 
+                              fontFamily="var(--font-heading)" 
+                              fontSize="11" 
+                              fontWeight="bold" 
+                              textAnchor="middle"
+                              letterSpacing="-0.5"
+                              filter="url(#logo-glow)">
+                            K
+                        </text>
+                    </svg>
                 </div>
-                
-                <div className="terminal-body">
-                    <div className="cyber-logo-wrapper">
-                        <div className="cyber-scanner"></div>
-                        <svg className="cyber-shield-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path 
-                                d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" 
-                                stroke="currentColor" 
-                                strokeWidth="1.5" 
-                                strokeLinecap="round" 
-                                strokeLinejoin="round"
-                            />
-                            <path 
-                                d="M12 6V12L16 14" 
-                                stroke="currentColor" 
-                                strokeWidth="1.5" 
-                                strokeLinecap="round" 
-                                strokeLinejoin="round"
-                            />
-                        </svg>
-                    </div>
 
-                    <div className="console-logs">
-                        {logs.map((log, idx) => (
-                            <div 
-                                key={idx} 
-                                className={`console-line ${log.includes('GRANTED') ? 'success' : ''}`}
-                            >
-                                {log}
-                            </div>
-                        ))}
+                {/* Typography and sleek layout */}
+                <div className="preloader-text-section">
+                    <h2 className="preloader-brand">KISHORE K V</h2>
+                    <p className="preloader-status">{statusText}</p>
+                    
+                    <div className="sleek-progress-container">
+                        <div className="sleek-progress-bar" style={{ width: `${progress}%` }}></div>
                     </div>
-
-                    <div className="progress-section">
-                        <div className="progress-header">
-                            <span className="progress-label">System Integrity Scan</span>
-                            <span className="progress-percent">{progress}%</span>
-                        </div>
-                        <div className="progress-bar-container">
-                            <div 
-                                className="progress-bar-fill" 
-                                style={{ width: `${progress}%` }}
-                            ></div>
-                        </div>
-                    </div>
+                    <span className="sleek-progress-pct">{progress}%</span>
                 </div>
             </div>
         </div>
     );
 }
+
