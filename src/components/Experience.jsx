@@ -3,7 +3,7 @@ import TiltCard from './TiltCard';
 
 export default function Experience({ onOpenLightbox }) {
     return (
-        <section id="experience" className="section experience-section">
+        <>
             <div className="section-header">
                 <h2 className="section-title">Work Experience</h2>
                 <div className="section-divider"></div>
@@ -35,6 +35,6 @@ export default function Experience({ onOpenLightbox }) {
                     </TiltCard>
                 </div>
             </div>
-        </section>
+        </>
     );
 }

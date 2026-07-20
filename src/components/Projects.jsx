@@ -61,7 +61,7 @@ const projectsData = [
 
 export default function Projects() {
     return (
-        <section id="projects" className="section projects-section">
+        <>
             <div className="section-header">
                 <h2 className="section-title">Projects Showcase</h2>
                 <div className="section-divider"></div>
@@ -103,6 +103,6 @@ export default function Projects() {
                     </article>
                 ))}
             </div>
-        </section>
+        </>
     );
 }

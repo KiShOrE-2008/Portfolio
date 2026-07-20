@@ -59,7 +59,7 @@ function AnimatedStat({ value, label }) {
 
 export default function About() {
     return (
-        <section id="about" className="section about-section">
+        <>
             <div className="section-header">
                 <h2 className="section-title">About Me</h2>
                 <div className="section-divider"></div>
@@ -86,7 +86,7 @@ export default function About() {
                                 <p>B.Tech IT, Chennai Institute of Technology</p>
                             </div>
                         </div>
-                        <div class="details-item">
+                        <div className="details-item">
                             <span className="details-icon">🎯</span>
                             <div>
                                 <strong>Ultimate Goals</strong>
@@ -103,6 +103,6 @@ export default function About() {
                     <AnimatedStat value="200" label="LeetCode Solves" />
                 </div>
             </div>
-        </section>
+        </>
     );
 }

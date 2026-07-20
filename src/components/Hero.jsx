@@ -43,7 +43,7 @@ export default function Hero() {
     }, [typedText, isDeleting, loopNum, typingSpeed]);
 
     return (
-        <section id="hero" className="section hero-section">
+        <>
             <div className="hero-content">
                 <div className="badge hero-badge">Welcome to my Space</div>
                 <h1 className="hero-title">
@@ -137,6 +137,6 @@ export default function Hero() {
                     </div>
                 </TiltCard>
             </div>
-        </section>
+        </>
     );
 }

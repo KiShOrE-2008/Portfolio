@@ -3,7 +3,7 @@ import TiltCard from './TiltCard';
 
 export default function Education() {
     return (
-        <section id="education" className="section education-section">
+        <>
             <div className="section-header">
                 <h2 className="section-title">Education</h2>
                 <div className="section-divider"></div>
@@ -42,6 +42,6 @@ export default function Education() {
                     </p>
                 </TiltCard>
             </div>
-        </section>
+        </>
     );
 }

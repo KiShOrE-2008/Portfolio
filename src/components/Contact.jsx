@@ -33,7 +33,7 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="section contact-section">
+        <>
             <div className="section-header">
                 <h2 className="section-title">Get In Touch</h2>
                 <div className="section-divider"></div>
@@ -128,6 +128,6 @@ export default function Contact() {
                     </form>
                 </div>
             </div>
-        </section>
+        </>
     );
 }

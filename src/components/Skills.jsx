@@ -64,7 +64,7 @@ export default function Skills() {
     const [activeTab, setActiveTab] = useState('languages');
 
     return (
-        <section id="skills" className="section skills-section">
+        <>
             <div className="section-header">
                 <h2 className="section-title">Technical Skills</h2>
                 <div className="section-divider"></div>
@@ -103,6 +103,6 @@ export default function Skills() {
                     </div>
                 ))}
             </div>
-        </section>
+        </>
     );
 }

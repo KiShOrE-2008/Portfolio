@@ -76,7 +76,7 @@ const certsData = [
 
 export default function Certifications() {
     return (
-        <section id="certifications" className="section certifications-section">
+        <>
             <div className="section-header">
                 <h2 className="section-title">Licenses & Certifications</h2>
                 <div className="section-divider"></div>
@@ -117,6 +117,6 @@ export default function Certifications() {
                     </article>
                 ))}
             </div>
-        </section>
+        </>
     );
 }
