@@ -36,22 +36,38 @@ Live Demo: **[kishore-2008.github.io/Portfolio](https://kishore-2008.github.io/P
 git clone https://github.com/KiShOrE-2008/Portfolio.git
 ```
 
-### 2. Open Locally
-Navigate to the directory and launch `index.html` in Chrome, Firefox, or Edge.
-*Or run a local server (e.g., Live Server extension in VS Code).*
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Run Locally
+```bash
+npm run dev
+```
+
+### 4. Build Production Bundle
+```bash
+npm run build
+```
 
 ---
 
 ## 📁 Repository Structure
 ```plaintext
 Portfolio/
-├── images/               # Local subdirectory for internship photos
-│   ├── internship_1.jpg  # Photo 1 (Certificate)
-│   └── ...
-├── index.html            # Main site structure & layouts
-├── style.css             # Glassmorphism design tokens & media queries
-├── script.js            # Custom 3D tilt, lightboxes, & sliders
-└── README.md             # Project documentation
+├── public/               # Static assets
+│   └── images/           # Internship photos & favicon
+├── src/
+│   ├── components/       # Section & UI components
+│   ├── App.jsx           # Main page controller
+│   ├── index.css         # Stylings & tokens
+│   └── main.jsx          # React app mounting script
+├── index.html            # Entry layout for Vite
+├── package.json          # Project scripts & packages
+├── vite.config.js        # Vite compilation options
+├── vercel.json           # Vercel deployment mappings
+└── README.md             # Documentation
 ```
 
 ---
