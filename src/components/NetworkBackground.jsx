@@ -58,9 +58,15 @@ export default function NetworkBackground() {
                 // Bounce off left/right edges
                 if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
                 
-                // Wrap top/bottom edges
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
+                // Wrap top/bottom edges and disperse coordinates to prevent horizontal clustering
+                if (this.y < 0) {
+                    this.y = canvas.height - Math.random() * (canvas.height * 0.5);
+                    this.x = Math.random() * canvas.width;
+                }
+                if (this.y > canvas.height) {
+                    this.y = Math.random() * (canvas.height * 0.5);
+                    this.x = Math.random() * canvas.width;
+                }
 
                 // Mouse interaction (slight push away)
                 if (mouse.x !== null && mouse.y !== null) {
