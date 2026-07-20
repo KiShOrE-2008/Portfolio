@@ -1824,6 +1824,6 @@ body.no-scroll {
     height: 100vh;
     z-index: -2; /* Runs behind text content, in front of the color gradient background */
     pointer-events: none;
-    opacity: 0.55;
+    opacity: 0.85;
     mix-blend-mode: screen;
 }

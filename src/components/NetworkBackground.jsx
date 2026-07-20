@@ -51,13 +51,16 @@ export default function NetworkBackground() {
                 this.radius = Math.random() * 1.5 + 1; // 1px to 2.5px
             }
 
-            update() {
+            update(deltaScroll) {
                 this.x += this.vx;
-                this.y += this.vy;
+                this.y += this.vy - deltaScroll;
 
-                // Bounce off edges
+                // Bounce off left/right edges
                 if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
-                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+                
+                // Wrap top/bottom edges
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
 
                 // Mouse interaction (slight push away)
                 if (mouse.x !== null && mouse.y !== null) {
@@ -77,7 +80,7 @@ export default function NetworkBackground() {
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.4)'; // Cyan-blue particle
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.75)'; // Brighter Cyan-blue particle
                 ctx.fill();
             }
         }
@@ -87,13 +90,19 @@ export default function NetworkBackground() {
             particles.push(new Particle());
         }
 
+        let lastScrollY = window.scrollY;
+
         // Animation Loop
         const animate = () => {
+            const currentScrollY = window.scrollY;
+            const deltaScroll = (currentScrollY - lastScrollY) * 0.85;
+            lastScrollY = currentScrollY;
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // Update & Draw particles
             particles.forEach((p) => {
-                p.update();
+                p.update(deltaScroll);
                 p.draw();
             });
 
@@ -108,12 +117,12 @@ export default function NetworkBackground() {
 
                     if (dist < connectionDistance) {
                         // Opacity fades as distance increases
-                        const opacity = (1 - dist / connectionDistance) * 0.18;
+                        const opacity = (1 - dist / connectionDistance) * 0.38; // Increased connection line opacity
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(p2.x, p2.y);
                         ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`; // Purple connection line
-                        ctx.lineWidth = 0.8;
+                        ctx.lineWidth = 0.9;
                         ctx.stroke();
                     }
                 }
@@ -125,12 +134,12 @@ export default function NetworkBackground() {
                     const dist = Math.hypot(dx, dy);
 
                     if (dist < mouseRadius) {
-                        const opacity = (1 - dist / mouseRadius) * 0.25;
+                        const opacity = (1 - dist / mouseRadius) * 0.55; // Increased mouse connector line opacity
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(mouse.x, mouse.y);
                         ctx.strokeStyle = `rgba(56, 189, 248, ${opacity})`; // Cyan connector to mouse
-                        ctx.lineWidth = 1;
+                        ctx.lineWidth = 1.1;
                         ctx.stroke();
                     }
                 }
