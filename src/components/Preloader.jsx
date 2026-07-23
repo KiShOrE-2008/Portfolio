@@ -2,53 +2,78 @@ import React, { useState, useEffect } from 'react';
 import NetworkBackground from './NetworkBackground';
 
 export default function Preloader({ onComplete }) {
+    const [typedText, setTypedText] = useState("");
+    const [commandCompleted, setCommandCompleted] = useState(false);
+    const [consoleLines, setConsoleLines] = useState([]);
     const [progress, setProgress] = useState(0);
     const [fadeOut, setFadeOut] = useState(false);
-    const [statusText, setStatusText] = useState("Initializing portfolio modules...");
 
     useEffect(() => {
-        const statuses = [
-            "Initializing portfolio modules...",
-            "Loading project directory...",
-            "Assembling interface assets...",
-            "Optimizing connections...",
-            "Connection established"
-        ];
-        let statusIndex = 0;
+        const command = "npx kishore-kv --init";
+        let typeIndex = 0;
         
-        const statusInterval = setInterval(() => {
-            statusIndex = (statusIndex + 1) % statuses.length;
-            if (progress < 100) {
-                setStatusText(statuses[statusIndex]);
+        // 1. Command typing animation
+        const typingInterval = setInterval(() => {
+            if (typeIndex < command.length) {
+                setTypedText((prev) => prev + command.charAt(typeIndex));
+                typeIndex++;
+            } else {
+                clearInterval(typingInterval);
+                // Start log output sequence after a short delay
+                setTimeout(() => {
+                    setCommandCompleted(true);
+                    startExecution();
+                }, 300);
             }
-        }, 800);
+        }, 55);
 
-        const progressInterval = setInterval(() => {
-            setProgress((prev) => {
-                const jump = Math.random() > 0.8 ? Math.floor(Math.random() * 12) + 4 : Math.floor(Math.random() * 3) + 1;
-                const next = prev + jump;
-                if (next >= 100) {
-                    setStatusText("Access Granted");
-                    clearInterval(progressInterval);
-                    return 100;
-                }
-                return next;
+        const startExecution = () => {
+            const events = [
+                { text: "> Fetching system modules... OK", delay: 200 },
+                { text: "> Connecting to cyber-nodes... Connected", delay: 600 },
+                { text: "> Loading portfolio experience nodes... Done", delay: 1000 },
+                { text: "> Initializing interactive layout...", delay: 1400 }
+            ];
+
+            events.forEach((event) => {
+                setTimeout(() => {
+                    setConsoleLines((prev) => [...prev, event.text]);
+                }, event.delay);
             });
-        }, 100);
 
-        const shutdownTimer = setTimeout(() => {
-            setFadeOut(true);
+            // Start progress bar after logs finish writing
             setTimeout(() => {
-                onComplete();
-            }, 800);
-        }, 3400);
+                let currentProgress = 0;
+                const progressInterval = setInterval(() => {
+                    currentProgress += 5;
+                    if (currentProgress >= 100) {
+                        setProgress(100);
+                        clearInterval(progressInterval);
+                        
+                        // Hold completed state briefly before transition
+                        setTimeout(() => {
+                            setFadeOut(true);
+                            setTimeout(() => {
+                                onComplete();
+                            }, 800);
+                        }, 500);
+                    } else {
+                        setProgress(currentProgress);
+                    }
+                }, 40);
+            }, 1600);
+        };
 
         return () => {
-            clearInterval(progressInterval);
-            clearInterval(statusInterval);
-            clearTimeout(shutdownTimer);
+            clearInterval(typingInterval);
         };
-    }, [onComplete, progress]);
+    }, [onComplete]);
+
+    // Construct ASCII progress bar matching progress
+    const barLength = 20;
+    const filledCount = Math.round((progress / 100) * barLength);
+    const emptyCount = barLength - filledCount;
+    const progressBarText = '='.repeat(filledCount) + ' '.repeat(emptyCount);
 
     return (
         <div className={`network-preloader-container ${fadeOut ? 'fade-out' : ''}`}>
@@ -60,83 +85,42 @@ export default function Preloader({ onComplete }) {
                 <NetworkBackground />
             </div>
             
-            <div className="network-preloader-content">
-                {/* Sleek Constellation Node Logo */}
-                <div className="logo-wrapper">
-                    <svg viewBox="0 0 150 150" className="node-logo-svg" aria-label="Kishore K V Monogram Logo">
-                        <defs>
-                            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="var(--accent-blue)" />
-                                <stop offset="50%" stopColor="var(--accent-purple)" />
-                                <stop offset="100%" stopColor="var(--accent-green)" />
-                            </linearGradient>
-                            <filter id="logo-glow" x="-30%" y="-30%" width="160%" height="160%">
-                                <feGaussianBlur stdDeviation="4" result="blur" />
-                                <feMerge>
-                                    <feMergeNode in="blur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                        </defs>
-
-                        {/* Connections (Interconnected Mesh Lines) */}
-                        <g className="mesh-lines" stroke="url(#logo-grad)" strokeWidth="1.2" opacity="0.6" fill="none">
-                            <line x1="75" y1="25" x2="125" y2="55" />
-                            <line x1="125" y1="55" x2="125" y2="95" />
-                            <line x1="125" y1="95" x2="75" y2="125" />
-                            <line x1="75" y1="125" x2="25" y2="95" />
-                            <line x1="25" y1="95" x2="25" y2="55" />
-                            <line x1="25" y1="55" x2="75" y2="25" />
-                            
-                            {/* Inner lines connecting to center */}
-                            <line x1="75" y1="75" x2="75" y2="25" className="inner-line-1" />
-                            <line x1="75" y1="75" x2="125" y2="55" className="inner-line-2" />
-                            <line x1="75" y1="75" x2="125" y2="95" className="inner-line-3" />
-                            <line x1="75" y1="75" x2="75" y2="125" className="inner-line-4" />
-                            <line x1="75" y1="75" x2="25" y2="95" className="inner-line-5" />
-                            <line x1="75" y1="75" x2="25" y2="55" className="inner-line-6" />
-                        </g>
-
-                        {/* Node dots */}
-                        <g fill="var(--bg-dark)" stroke="url(#logo-grad)" strokeWidth="1.5">
-                            <circle cx="75" cy="25" r="4.5" className="node-pulse dot-1" />
-                            <circle cx="125" cy="55" r="4.5" className="node-pulse dot-2" />
-                            <circle cx="125" cy="95" r="4.5" className="node-pulse dot-3" />
-                            <circle cx="75" cy="125" r="4.5" className="node-pulse dot-4" />
-                            <circle cx="25" cy="95" r="4.5" className="node-pulse dot-5" />
-                            <circle cx="25" cy="55" r="4.5" className="node-pulse dot-6" />
-                        </g>
-
-                        {/* Center glowing monogram node */}
-                        <circle cx="75" cy="75" r="16" fill="url(#logo-grad)" filter="url(#logo-glow)" opacity="0.15" />
-                        <circle cx="75" cy="75" r="12" fill="var(--bg-dark)" stroke="url(#logo-grad)" strokeWidth="1.5" />
-                        
-                        {/* Monogram Text */}
-                        <text x="75" y="79" 
-                              fill="url(#logo-grad)" 
-                              fontFamily="var(--font-heading)" 
-                              fontSize="11" 
-                              fontWeight="bold" 
-                              textAnchor="middle"
-                              letterSpacing="-0.5"
-                              filter="url(#logo-glow)">
-                            K
-                        </text>
-                    </svg>
+            {/* Terminal Window Mockup */}
+            <div className="terminal-preloader-window">
+                <div className="terminal-header">
+                    <div className="terminal-button red"></div>
+                    <div className="terminal-button yellow"></div>
+                    <div className="terminal-button green"></div>
+                    <div className="terminal-title">bash - guest@kishore-kv:~</div>
                 </div>
-
-                {/* Typography and sleek layout */}
-                <div className="preloader-text-section">
-                    <h2 className="preloader-brand">KISHORE K V</h2>
-                    <p className="preloader-status">{statusText}</p>
-                    
-                    <div className="sleek-progress-container">
-                        <div className="sleek-progress-bar" style={{ width: `${progress}%` }}></div>
+                <div className="terminal-body">
+                    <div className="terminal-prompt">
+                        <span className="terminal-user">guest@kishore-kv</span>:<span className="terminal-dir">~</span>$ <span className="terminal-command">{typedText}</span>
+                        {!commandCompleted && <span className="terminal-cursor"></span>}
                     </div>
-                    <span className="sleek-progress-pct">{progress}%</span>
+                    
+                    {commandCompleted && (
+                        <div className="terminal-output">
+                            {consoleLines.map((line, idx) => (
+                                <div key={idx} className="terminal-line">{line}</div>
+                            ))}
+                            
+                            {progress > 0 && (
+                                <div className="terminal-progress-line">
+                                    <span className="progress-bracket">[</span>
+                                    <span className="progress-bar-text">{progressBarText}</span>
+                                    <span className="progress-bracket">]</span>
+                                    <span className="progress-pct"> {progress}%</span>
+                                </div>
+                            )}
+                            
+                            {progress === 100 && (
+                                <div className="terminal-success-line">Launch successful. Entering portfolio...</div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
-
