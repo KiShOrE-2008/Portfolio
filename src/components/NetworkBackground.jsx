@@ -49,6 +49,16 @@ export default function NetworkBackground() {
                 this.vx = (Math.random() - 0.5) * 0.5;
                 this.vy = (Math.random() - 0.5) * 0.5;
                 this.radius = Math.random() * 1.5 + 1; // 1px to 2.5px
+                
+                // Color selection: 75% cyan-blue, 17% purple, 8% mild green
+                const rand = Math.random();
+                if (rand < 0.75) {
+                    this.color = 'rgba(56, 189, 248, 0.75)'; // Cyan-blue
+                } else if (rand < 0.92) {
+                    this.color = 'rgba(139, 92, 246, 0.75)'; // Purple
+                } else {
+                    this.color = 'rgba(34, 197, 94, 0.7)'; // Mild Green
+                }
             }
 
             update(deltaScroll) {
@@ -86,7 +96,7 @@ export default function NetworkBackground() {
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.75)'; // Brighter Cyan-blue particle
+                ctx.fillStyle = this.color;
                 ctx.fill();
             }
         }
@@ -127,7 +137,13 @@ export default function NetworkBackground() {
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`; // Purple connection line
+                        
+                        // Use a mild green connection if BOTH particles are green
+                        if (p1.color.includes('34, 197, 94') && p2.color.includes('34, 197, 94')) {
+                            ctx.strokeStyle = `rgba(34, 197, 94, ${opacity * 0.8})`;
+                        } else {
+                            ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`; // Purple connection line
+                        }
                         ctx.lineWidth = 0.9;
                         ctx.stroke();
                     }

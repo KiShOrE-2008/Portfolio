@@ -84,6 +84,7 @@ export default function App() {
             <NetworkBackground />
             <div className="radial-glow glow-1" id="radialGlow1" ref={glowRef1}></div>
             <div className="radial-glow glow-2" id="radialGlow2"></div>
+            <div className="radial-glow glow-3" id="radialGlow3"></div>
 
             {/* Navigation Header */}
             <Navbar activeSection={activeSection} />

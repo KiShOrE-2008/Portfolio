@@ -67,7 +67,8 @@ export default function Preloader({ onComplete }) {
                         <defs>
                             <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" stopColor="var(--accent-blue)" />
-                                <stop offset="100%" stopColor="var(--accent-purple)" />
+                                <stop offset="50%" stopColor="var(--accent-purple)" />
+                                <stop offset="100%" stopColor="var(--accent-green)" />
                             </linearGradient>
                             <filter id="logo-glow" x="-30%" y="-30%" width="160%" height="160%">
                                 <feGaussianBlur stdDeviation="4" result="blur" />
