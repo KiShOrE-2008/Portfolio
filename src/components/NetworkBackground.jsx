@@ -11,8 +11,8 @@ export default function NetworkBackground() {
         let animationFrameId;
 
         // Configuration
-        const particleCount = 80;
-        const connectionDistance = 120;
+        const particleCount = 130;
+        const connectionDistance = 130;
         const mouseRadius = 150;
         const particles = [];
         const mouse = { x: null, y: null };
