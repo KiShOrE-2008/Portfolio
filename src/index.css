@@ -84,8 +84,10 @@ body {
 
 .glow-1 {
     background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
-    top: -10%;
-    left: -10%;
+    top: 0;
+    left: 0;
+    margin-left: -20vw;
+    margin-top: -20vw;
 }
 
 .glow-2 {

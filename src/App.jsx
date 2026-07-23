@@ -29,7 +29,7 @@ export default function App() {
             const { clientX, clientY } = e;
             const glow = glowRef1.current;
             if (glow) {
-                glow.style.transform = `translate3d(${clientX - window.innerWidth / 2}px, ${clientY - window.innerHeight / 2}px, 0)`;
+                glow.style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`;
             }
         };
 
