@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TiltCard from './TiltCard';
 
-function AnimatedStat({ value, label }) {
+function AnimatedStat({ value, label, suffix = "+" }) {
     const [count, setCount] = useState(0);
     const statRef = useRef(null);
 
@@ -51,7 +51,7 @@ function AnimatedStat({ value, label }) {
 
     return (
         <TiltCard ref={statRef} className="stat-card tilt-card">
-            <div className="stat-num">{count}+</div>
+            <div className="stat-num">{count}{suffix}</div>
             <div className="stat-label">{label}</div>
         </TiltCard>
     );
@@ -97,10 +97,10 @@ export default function About() {
                 </div>
 
                 <div className="about-stats-container">
-                    <AnimatedStat value="5" label="Coding Projects" />
-                    <AnimatedStat value="8" label="GitHub Followers" />
+                    <AnimatedStat value="6" label="Coding Projects" />
+                    <AnimatedStat value="11" label="GitHub Followers" />
                     <AnimatedStat value="5" label="GitHub Stars" />
-                    <AnimatedStat value="200" label="LeetCode Solves" />
+                    <AnimatedStat value="250" label="LeetCode Solves" />
                 </div>
             </div>
         </>

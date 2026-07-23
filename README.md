@@ -9,8 +9,10 @@ Live Demo: **[kishore-kv-portfolio.vercel.app](https://kishore-kv-portfolio.verc
 ## ✨ Features
 
 - **🛡️ Cybersecurity & Networking Showcase**: Dedicated section detailing technical capabilities (Wireshark traffic analysis, penetration testing, cybercrime investigation, TCP/IP, digital forensics, etc.).
-- **🚀 Cyber-Themed Boot Preloader**: Responsive startup preloader displaying simulated TCP/IP diagnostic handshakes, Cisco credential checks, and integrity logs before revealing the site contents.
-- **🕸️ Scrollable Interactive Canvas Nodes**: Canvas-based particle background system where floating nodes connect with glowing lines, react to mouse hover repelling forces, and scroll dynamically with vertical parallax.
+- **💻 Interactive CLI Terminal Preloader**: A simulated command-line interface terminal preloader window that typewrites a launch command (`npx kishore-kv --init`), prints sequential system loading verification logs, and displays an ASCII-style installation progress bar before revealing the site contents.
+- **🕸️ Scrollable Interactive Canvas Nodes**: Canvas-based particle background system where floating nodes connect with glowing lines, react to mouse hover repelling forces, and scroll dynamically with vertical parallax. Features randomized colors (cyan-blue, purple, and green) with green link connections.
+- **🟢 Subtle Cyber Green Theme**: A highly refined, premium cyber green highlight incorporated into active badges, project tags, and ambient background glows, blending harmoniously with the primary blue/purple theme.
+- **🎯 Precise Cursor Glow Alignment**: A viewport-anchored mouse-following radial glow centered perfectly under the pointer tip.
 - **📈 Uttar Pradesh Police Cyber Internship Timeline**: Vertical glowing experience timeline node showing internship milestones, integrated with a keyboard-navigable 7-photo slide lightbox gallery popup.
 - **🎓 Interactive Education Section**: Responsive glassmorphic layouts mapping academic credentials at **Chennai Institute of Technology** and **Shri Vidhya Mandhir**, highlighting specialized coursework (IIT Madras Data Science & AI).
 - **🥇 Licenses & Certifications Grid**: Compact glassmorphic cards display for Cisco, Forage, HackerRank, and Hack & Fix certifications.
