@@ -20,7 +20,23 @@ export default function App() {
     const [activeSection, setActiveSection] = useState('hero');
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
+    const [scrollProgress, setScrollProgress] = useState(0);
     const glowRef1 = useRef(null);
+
+    // Scroll Progress Indicator Tracker
+    useEffect(() => {
+        const handleScrollProgress = () => {
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (totalHeight > 0) {
+                const currentProgress = (window.scrollY / totalHeight) * 100;
+                setScrollProgress(currentProgress);
+            }
+        };
+
+        window.addEventListener('scroll', handleScrollProgress);
+        handleScrollProgress();
+        return () => window.removeEventListener('scroll', handleScrollProgress);
+    }, []);
 
     // Mouse Glow Follower effect
     useEffect(() => {
@@ -77,6 +93,13 @@ export default function App() {
 
     return (
         <div className="app-container">
+            {/* Top Scroll Progress Indicator */}
+            <div
+                className="top-scroll-progress-bar"
+                style={{ width: `${scrollProgress}%` }}
+                aria-hidden="true"
+            ></div>
+
             {isLoading && (
                 <Preloader onComplete={() => setIsLoading(false)} />
             )}

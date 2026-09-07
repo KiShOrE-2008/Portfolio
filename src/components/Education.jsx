@@ -1,9 +1,52 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import TiltCard from './TiltCard';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Education() {
+    const eduRef = useRef(null);
+
+    useGSAP(() => {
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (isReducedMotion) return;
+
+        gsap.fromTo('.section-header',
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: eduRef.current.querySelector('.section-header'),
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.education-card',
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: eduRef.current.querySelector('.education-grid'),
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+    }, { scope: eduRef });
+
     return (
-        <>
+        <div ref={eduRef} className="education-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
                 <h2 className="section-title">Education</h2>
                 <div className="section-divider"></div>
@@ -42,6 +85,7 @@ export default function Education() {
                     </p>
                 </TiltCard>
             </div>
-        </>
+        </div>
     );
 }
+

@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import TiltCard from './TiltCard';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projectsData = [
     {
@@ -60,8 +65,46 @@ const projectsData = [
 ];
 
 export default function Projects() {
+    const projectsRef = useRef(null);
+
+    useGSAP(() => {
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (isReducedMotion) return;
+
+        gsap.fromTo('.section-header',
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: projectsRef.current.querySelector('.section-header'),
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.project-card-wrapper',
+            { y: 35, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: projectsRef.current.querySelector('.projects-grid'),
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+    }, { scope: projectsRef });
+
     return (
-        <>
+        <div ref={projectsRef} className="projects-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
                 <h2 className="section-title">Projects Showcase</h2>
                 <div className="section-divider"></div>
@@ -103,6 +146,7 @@ export default function Projects() {
                     </article>
                 ))}
             </div>
-        </>
+        </div>
     );
 }
+

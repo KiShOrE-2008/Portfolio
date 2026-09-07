@@ -4143,3 +4143,15 @@ body.no-scroll {
         grid-template-columns: 1fr;
     }
 }
+
+/* Top Scroll Progress Indicator Bar */
+.top-scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #38bdf8, var(--accent-green, #39d353));
+    box-shadow: 0 0 10px var(--accent-green, #39d353);
+    z-index: 2005;
+    transition: width 0.1s linear;
+}

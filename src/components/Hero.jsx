@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import TiltCard from './TiltCard';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const textArray = [
     "B.Tech Information Technology Student",
@@ -9,10 +14,76 @@ const textArray = [
 ];
 
 export default function Hero() {
+    const heroRef = useRef(null);
     const [typedText, setTypedText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [loopNum, setLoopNum] = useState(0);
     const [typingSpeed, setTypingSpeed] = useState(100);
+
+    // GSAP Entrance Sequence & Scroll Parallax Exit
+    useGSAP(() => {
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (isReducedMotion) return;
+
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } });
+
+        tl.fromTo('.hero-badge', 
+            { y: -15, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 0.6 }
+        )
+        .fromTo('.hero-title', 
+            { y: 35, opacity: 0, clipPath: 'inset(0 0 100% 0)' }, 
+            { y: 0, opacity: 1, clipPath: 'inset(0 0 0% 0)', duration: 0.8 },
+            '-=0.4'
+        )
+        .fromTo(['.hero-subtitle', '.hero-description'], 
+            { y: 25, opacity: 0 }, 
+            { y: 0, opacity: 1, stagger: 0.15, duration: 0.7 },
+            '-=0.4'
+        )
+        .fromTo('.hero-ctas .btn', 
+            { y: 20, opacity: 0 }, 
+            { y: 0, opacity: 1, stagger: 0.12, duration: 0.6 },
+            '-=0.3'
+        )
+        .fromTo('.hero-socials .social-icon-btn', 
+            { scale: 0.8, opacity: 0 }, 
+            { scale: 1, opacity: 1, stagger: 0.08, duration: 0.5 },
+            '-=0.3'
+        )
+        .fromTo('.hero-visual-wrapper', 
+            { y: 40, scale: 0.92, opacity: 0 }, 
+            { y: 0, scale: 1, opacity: 1, duration: 0.9 },
+            '-=0.8'
+        );
+
+        // ScrollTrigger Parallax & Exit
+        gsap.to('.hero-content', {
+            yPercent: -15,
+            opacity: 0.35,
+            scale: 0.97,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom 20%',
+                scrub: true
+            }
+        });
+
+        gsap.to('.hero-visual-wrapper', {
+            yPercent: -25,
+            opacity: 0.3,
+            scale: 0.95,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom 20%',
+                scrub: true
+            }
+        });
+    }, { scope: heroRef });
 
     useEffect(() => {
         let timer;
@@ -43,7 +114,7 @@ export default function Hero() {
     }, [typedText, isDeleting, loopNum, typingSpeed]);
 
     return (
-        <>
+        <div ref={heroRef} className="hero-container-inner" style={{ width: '100%', display: 'contents' }}>
             <div className="hero-content">
                 <div className="badge hero-badge">Welcome to my Space</div>
                 <h1 className="hero-title">
@@ -71,13 +142,7 @@ export default function Hero() {
                     </a>
                     <a href="https://www.linkedin.com/in/kishore-k-v-090491349/" target="_blank"
                         rel="noopener noreferrer" className="social-icon-btn" id="heroSocialLinkedin" title="LinkedIn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                            strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
-                            </path>
-                            <rect x="2" y="9" width="4" height="12"></rect>
-                            <circle cx="4" cy="4" r="2"></circle>
-                        </svg>
+                        <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/linkedin.webp" alt="LinkedIn" width="22" height="22" style={{ objectFit: 'contain' }} />
                     </a>
                     <a href="https://leetcode.com/u/Kishore2008/" target="_blank" rel="noopener noreferrer"
                         className="social-icon-btn" id="heroSocialLeetcode" title="LeetCode">
@@ -131,6 +196,6 @@ export default function Hero() {
                     </div>
                 </TiltCard>
             </div>
-        </>
+        </div>
     );
 }

@@ -1,12 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Contact() {
+    const contactRef = useRef(null);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [formStatus, setFormStatus] = useState('');
     const [statusClass, setStatusClass] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useGSAP(() => {
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (isReducedMotion) return;
+
+        gsap.fromTo('.section-header',
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: contactRef.current.querySelector('.section-header'),
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.info-card',
+            { x: -35, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: contactRef.current.querySelector('.contact-grid'),
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.form-card',
+            { x: 35, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: contactRef.current.querySelector('.contact-grid'),
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.form-group',
+            { y: 20, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.08,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: contactRef.current.querySelector('#contactForm'),
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+    }, { scope: contactRef });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -54,7 +126,7 @@ export default function Contact() {
     };
 
     return (
-        <>
+        <div ref={contactRef} className="contact-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
                 <h2 className="section-title">Get In Touch</h2>
                 <div className="section-divider"></div>
@@ -69,7 +141,9 @@ export default function Contact() {
 
                     <div className="contact-methods">
                         <a href="mailto:kv.kishorevijay@gmail.com" className="method-item" id="contactEmailLink">
-                            <span className="method-icon">📧</span>
+                            <span className="method-icon">
+                                <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/gmail.webp" alt="Email" width="22" height="22" style={{ objectFit: 'contain', verticalAlign: 'middle' }} />
+                            </span>
                             <div className="method-details">
                                 <span className="method-label">Email</span>
                                 <span className="method-val">kv.kishorevijay@gmail.com</span>
@@ -88,7 +162,10 @@ export default function Contact() {
                         <a href="https://github.com/KiShOrE-2008" target="_blank" rel="noopener noreferrer"
                             className="social-btn" id="contactSocialGithub">GitHub</a>
                         <a href="https://www.linkedin.com/in/kishore-k-v-090491349/" target="_blank"
-                            rel="noopener noreferrer" className="social-btn" id="contactSocialLinkedin">LinkedIn</a>
+                            rel="noopener noreferrer" className="social-btn" id="contactSocialLinkedin">
+                            <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/linkedin.webp" alt="LinkedIn" width="16" height="16" style={{ objectFit: 'contain', verticalAlign: 'middle', marginRight: '6px' }} />
+                            LinkedIn
+                        </a>
                     </div>
                 </div>
 
@@ -149,6 +226,6 @@ export default function Contact() {
                     </form>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

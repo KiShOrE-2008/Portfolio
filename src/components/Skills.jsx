@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Category color theme tokens
 const categoryColors = {
@@ -380,12 +385,95 @@ const skillCategories = [
 ];
 
 export default function Skills() {
+    const skillsRef = useRef(null);
     const [activeTab, setActiveTab] = useState('languages');
 
     const activeCategory = skillCategories.find((cat) => cat.id === activeTab);
 
+    useGSAP(() => {
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (isReducedMotion) return;
+
+        gsap.fromTo('.section-header',
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: skillsRef.current.querySelector('.section-header'),
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.skills-tabs-container',
+            { y: 20, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: skillsRef.current.querySelector('.skills-tabs-container'),
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.skill-card-box',
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.05,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: skillsRef.current.querySelector('.skills-content'),
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.meter-dot.filled',
+            { scale: 0, opacity: 0 },
+            {
+                scale: 1,
+                opacity: 1,
+                duration: 0.4,
+                stagger: 0.04,
+                ease: 'back.out(1.7)',
+                scrollTrigger: {
+                    trigger: skillsRef.current.querySelector('.skills-content'),
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
+        gsap.fromTo('.currently-exploring-card',
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: skillsRef.current.querySelector('.currently-exploring-container'),
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+    }, { scope: skillsRef, dependencies: [activeTab] });
+
     return (
-        <>
+        <div ref={skillsRef} className="skills-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
                 <h2 className="section-title">Technical Skills</h2>
                 <p className="section-subtitle">
@@ -469,7 +557,7 @@ export default function Skills() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
