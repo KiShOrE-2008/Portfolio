@@ -12,7 +12,7 @@ const LeetCodeIcon = ({ size = 22, className = "" }) => (
         alt="LeetCode"
         width={size}
         height={size}
-        className={className}
+        className={`leetcode-icon-img ${className}`}
         style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0, objectFit: 'contain' }}
     />
 );
@@ -335,8 +335,8 @@ export default function CodingActivity() {
                                     </a>
                                 </div>
                             </div>
-                            <button className="modal-close-btn" onClick={() => setActiveModal(null)}>
-                                <i className="fas fa-times"></i>
+                            <button className="modal-close-btn" onClick={() => setActiveModal(null)} aria-label="Close modal">
+                                <span>&times;</span>
                             </button>
                         </div>
 
@@ -482,8 +482,8 @@ export default function CodingActivity() {
                                     </a>
                                 </div>
                             </div>
-                            <button className="modal-close-btn" onClick={() => setActiveModal(null)}>
-                                <i className="fas fa-times"></i>
+                            <button className="modal-close-btn" onClick={() => setActiveModal(null)} aria-label="Close modal">
+                                <span>&times;</span>
                             </button>
                         </div>
 

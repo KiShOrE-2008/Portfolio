@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import TiltCard from './TiltCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,35 +9,35 @@ const projectsData = [
     {
         id: 'projectPasswordChecker',
         icon: '🔑',
-        badge: 'Security',
+        badge: 'Security Architecture',
         title: 'Password Strength Checker',
-        desc: 'Advanced password strength analysis system applying entropy algorithms, pattern checks, crack-time estimates, and secure client-side PBKDF2 hashing.',
+        desc: 'Advanced password analysis system applying entropy calculations, pattern matching, crack-time estimation, and PBKDF2 hashing.',
         tags: ['Python', 'JavaScript', 'Cryptography'],
         link: 'https://github.com/KiShOrE-2008/Password_Checker',
-        linkLabel: 'Code',
-        linkId: 'linkProjPassCheck'
+        size: 'large', // bento grid spanning
+        accent: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.15))'
     },
     {
         id: 'projectRouterMonitor',
         icon: '🌐',
         badge: 'Networking',
         title: 'Router Monitoring Dashboard',
-        desc: 'Network analytics platform providing bandwidth load tracking, router packet inspections, connection status, and real-time administrative alerts.',
+        desc: 'Network analytics platform providing real-time bandwidth tracking, packet inspection, and admin alerts.',
         tags: ['Python', 'Traffic Analysis', 'Websockets'],
         link: 'https://github.com/KiShOrE-2008',
-        linkLabel: 'Explore',
-        linkId: 'linkProjRouter'
+        size: 'medium',
+        accent: 'linear-gradient(135deg, rgba(57, 211, 83, 0.15), rgba(56, 189, 248, 0.15))'
     },
     {
         id: 'projectWasteSegregation',
         icon: '♻️',
-        badge: 'IoT',
+        badge: 'IoT & Hardware',
         title: 'Smart Waste Segregation',
-        desc: 'Automated sorting system using hardware sensors, moisture detectors, microcontrollers (Arduino), and servo actuators to segregate trash.',
+        desc: 'Automated sorting system using hardware sensors, moisture detectors, microcontrollers (Arduino), and servo actuators.',
         tags: ['Arduino', 'C / C++', 'IoT Hardware'],
         link: 'https://github.com/KiShOrE-2008',
-        linkLabel: 'Explore',
-        linkId: 'linkProjWaste'
+        size: 'medium',
+        accent: 'linear-gradient(135deg, rgba(255, 159, 28, 0.15), rgba(239, 68, 68, 0.15))'
     },
     {
         id: 'projectLinkWeb',
@@ -48,19 +47,19 @@ const projectsData = [
         desc: 'A modern, responsive link list profile directory featuring micro-interactions, custom themes, and glassmorphic designs.',
         tags: ['HTML5', 'CSS3', 'JavaScript'],
         link: 'https://github.com/KiShOrE-2008/Portfolio',
-        linkLabel: 'Code',
-        linkId: 'linkProjLinkweb'
+        size: 'large',
+        accent: 'linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(59, 130, 246, 0.15))'
     },
     {
         id: 'projectCarsWeb',
         icon: '🏎️',
-        badge: 'Web UI',
-        title: 'Cars Web Page',
-        desc: 'A beautiful landing showcase for performance cars highlighting fluid responsive grids, smooth imagery animations, and model filters.',
+        badge: 'Web UI Showcase',
+        title: 'Cars Showcase Page',
+        desc: 'A landing showcase for performance cars highlighting fluid responsive grids and smooth imagery animations.',
         tags: ['HTML5', 'CSS3', 'Design'],
         link: 'https://github.com/KiShOrE-2008/cars',
-        linkLabel: 'Code',
-        linkId: 'linkProjCars'
+        size: 'full',
+        accent: 'linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.15))'
     }
 ];
 
@@ -71,31 +70,16 @@ export default function Projects() {
         const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (isReducedMotion) return;
 
-        gsap.fromTo('.section-header',
-            { y: 30, opacity: 0 },
+        gsap.fromTo('.bento-project-card',
+            { y: 40, opacity: 0 },
             {
                 y: 0,
                 opacity: 1,
                 duration: 0.7,
+                stagger: 0.12,
                 ease: 'power3.out',
                 scrollTrigger: {
-                    trigger: projectsRef.current.querySelector('.section-header'),
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse'
-                }
-            }
-        );
-
-        gsap.fromTo('.project-card-wrapper',
-            { y: 35, opacity: 0 },
-            {
-                y: 0,
-                opacity: 1,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: projectsRef.current.querySelector('.projects-grid'),
+                    trigger: projectsRef.current.querySelector('.projects-bento-grid'),
                     start: 'top 80%',
                     toggleActions: 'play none none reverse'
                 }
@@ -104,49 +88,54 @@ export default function Projects() {
     }, { scope: projectsRef });
 
     return (
-        <div ref={projectsRef} className="projects-container-inner" style={{ width: '100%' }}>
+        <div ref={projectsRef} className="projects-section-inner" style={{ width: '100%' }}>
             <div className="section-header">
-                <h2 className="section-title">Projects Showcase</h2>
+                <span className="section-eyebrow">FEATURED PORTFOLIO PROJECTS</span>
+                <h2 className="section-title">
+                    Selected <span className="gradient-text">Works</span>
+                </h2>
+                <p className="section-subtitle">
+                    A showcase of security systems, network tools, IoT hardware, and web engineering.
+                </p>
                 <div className="section-divider"></div>
             </div>
 
-            <div className="projects-grid">
+            <div className="projects-bento-grid">
                 {projectsData.map((project) => (
-                    <article key={project.id} className="project-card-wrapper">
-                        <TiltCard className="project-card tilt-card" id={project.id}>
-                            <div className="project-header">
-                                <div className="project-icon-box">{project.icon}</div>
-                                <span className="project-badge">{project.badge}</span>
-                            </div>
-                            <h3 className="project-card-title">{project.title}</h3>
-                            <p className="project-card-description">{project.desc}</p>
-                            <div className="project-tags">
+                    <article
+                        key={project.id}
+                        className={`bento-project-card glass-panel size-${project.size}`}
+                        style={{ '--card-accent': project.accent }}
+                    >
+                        <div className="project-card-header">
+                            <span className="project-icon">{project.icon}</span>
+                            <span className="project-badge-pill">{project.badge}</span>
+                        </div>
+
+                        <div className="project-card-body">
+                            <h3 className="project-title">{project.title}</h3>
+                            <p className="project-desc">{project.desc}</p>
+                        </div>
+
+                        <div className="project-card-footer">
+                            <div className="project-tags-list">
                                 {project.tags.map((tag, tIdx) => (
-                                    <span key={tIdx} className="tag">{tag}</span>
+                                    <span key={tIdx} className="tech-tag">{tag}</span>
                                 ))}
                             </div>
-                            <div className="project-links">
-                                <a 
-                                    href={project.link} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    className="project-link" 
-                                    id={project.linkId}
-                                >
-                                    {project.linkLabel}{' '}
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                                        strokeLinecap="round" strokeLinejoin="round">
-                                        <path
-                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                        </path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </TiltCard>
+                            <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="project-action-btn"
+                                aria-label={`View ${project.title}`}
+                            >
+                                <span className="arrow">↗</span>
+                            </a>
+                        </div>
                     </article>
                 ))}
             </div>
         </div>
     );
 }
-

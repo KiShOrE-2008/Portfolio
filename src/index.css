@@ -512,12 +512,9 @@ body {
 
 /* Hero Section Styles */
 .hero-section {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 4rem;
-    align-items: center;
-    padding-top: 8rem;
-    min-height: 100vh;
+    display: block;
+    width: 100%;
+    min-height: 90vh;
 }
 
 .hero-content {
@@ -1303,19 +1300,33 @@ body {
 .form-group input, .form-group textarea {
     padding: 0.9rem 1.2rem;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-light);
-    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border, rgba(255, 255, 255, 0.1));
+    color: var(--text-main, #ffffff);
     font-family: var(--font-body);
     font-size: 0.95rem;
     outline: none;
     transition: var(--transition-smooth);
 }
 
+html[data-theme="light"] .form-group input,
+html[data-theme="light"] .form-group textarea {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    color: #0f172a;
+}
+
 .form-group input:focus, .form-group textarea:focus {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 15px -3px var(--accent-blue-glow);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 15px -3px rgba(139, 92, 246, 0.3);
+}
+
+html[data-theme="light"] .form-group input:focus,
+html[data-theme="light"] .form-group textarea:focus {
+    background: #ffffff;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 15px -3px rgba(139, 92, 246, 0.3);
 }
 
 .btn-block {
@@ -4150,8 +4161,1816 @@ body.no-scroll {
     top: 0;
     left: 0;
     height: 3px;
-    background: linear-gradient(90deg, #38bdf8, var(--accent-green, #39d353));
-    box-shadow: 0 0 10px var(--accent-green, #39d353);
-    z-index: 2005;
+    background: linear-gradient(90deg, #8b5cf6, #06b6d4, #39d353);
+    box-shadow: 0 0 12px #06b6d4;
+    z-index: 3005;
     transition: width 0.1s linear;
+}
+
+/* ==========================================================================
+   lwportfolio01.muhilanorg.in Design System & Theme System
+   ========================================================================== */
+
+/* Theme Variables */
+:root {
+    --bg-dark: #090d16;
+    --bg-light: #f8fafc;
+    --card-bg-dark: rgba(15, 23, 42, 0.7);
+    --card-bg-light: rgba(255, 255, 255, 0.85);
+    --border-dark: rgba(255, 255, 255, 0.08);
+    --border-light: rgba(0, 0, 0, 0.08);
+    --text-primary-dark: #f8fafc;
+    --text-primary-light: #0f172a;
+    --text-secondary-dark: #94a3b8;
+    --text-secondary-light: #64748b;
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+    --accent-green: #10b981;
+}
+
+html[data-theme="dark"] {
+    --page-bg: var(--bg-dark);
+    --card-bg: var(--card-bg-dark);
+    --card-border: var(--border-dark);
+    --text-main: var(--text-primary-dark);
+    --text-muted: var(--text-secondary-dark);
+    --dot-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="light"] {
+    --page-bg: #ffffff;
+    --card-bg: var(--card-bg-light);
+    --card-border: var(--border-light);
+    --text-main: var(--text-primary-light);
+    --text-muted: var(--text-secondary-light);
+    --dot-color: rgba(15, 23, 42, 0.35);
+}
+
+body {
+    background-color: var(--page-bg);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Background Dotted Grid */
+.dotted-bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: radial-gradient(var(--dot-color) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+html[data-theme="light"] .dotted-bg-grid {
+    background-image: radial-gradient(rgba(15, 23, 42, 0.35) 2.2px, transparent 2.2px);
+    background-size: 26px 26px;
+    opacity: 0.95;
+}
+
+/* Universal Glassmorphic Panel */
+.glass-panel {
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+    border-color: rgba(139, 92, 246, 0.35);
+    box-shadow: 0 15px 35px -10px rgba(139, 92, 246, 0.2);
+}
+
+/* Gradient Text */
+.gradient-text, .gradient-title-text {
+    background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* ==========================================
+   1. Floating Top Glass Navbar
+   ========================================== */
+.floating-navbar-wrapper {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 0 1rem;
+    pointer-events: none;
+}
+
+.floating-nav-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1.2rem;
+    max-width: 900px;
+    width: 100%;
+    border-radius: 9999px;
+    pointer-events: auto;
+}
+
+.pill-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+}
+
+.logo-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text .name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.logo-text .subtext {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent-cyan);
+}
+
+.pill-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.pill-link {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.pill-link:hover, .pill-link.active {
+    color: var(--accent-purple);
+}
+
+.pill-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: transform 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+.mobile-toggle-btn {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.mobile-toggle-btn span {
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* ==========================================
+   2. Hero Section 2-Column Grid & Lanyard Card
+   ========================================== */
+.hero-section-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: center;
+    min-height: 80vh;
+    padding-top: 1rem;
+    width: 100%;
+}
+
+.availability-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 0.9rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+}
+
+.pulse-green-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10b981;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.6; }
+}
+
+.hero-title-main {
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    margin-bottom: 1.2rem;
+    min-height: 1.8rem;
+}
+
+.cursor-blink {
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.hero-description {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    max-width: 580px;
+    margin-bottom: 2rem;
+}
+
+.hero-ctas-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 2.2rem;
+}
+
+.btn-gradient-glow {
+    background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    color: #ffffff;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+html[data-theme="light"] .btn-gradient-glow {
+    background: #000000;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="light"] .lanyard-avatar {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+html[data-theme="light"] .meta-box {
+    background: rgba(241, 245, 249, 0.8);
+}
+
+.btn-gradient-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 28px rgba(139, 92, 246, 0.6);
+}
+
+.btn-glass-outline {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-main);
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-glass-outline:hover {
+    border-color: var(--accent-cyan);
+    transform: translateY(-2px);
+}
+
+.hero-social-ribbon {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.hero-lanyard-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+/* Lanyard Pendulum & Fixed Pivot Anchor Styling */
+.lanyard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    user-select: none;
+    touch-action: none;
+    padding-top: 10px;
+}
+
+.fixed-pivot-pin {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #cbd5e1 0%, #334155 70%, #0f172a 100%);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 14px rgba(139, 92, 246, 0.5);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 25;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fixed-pivot-pin:hover {
+    transform: translateX(-50%) scale(1.2);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.8);
+}
+
+.rotating-arm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: 50% 0px;
+    will-change: transform;
+    cursor: grab;
+}
+
+.rotating-arm.is-dragging {
+    cursor: grabbing;
+}
+
+.lanyard-strap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.strap-line {
+    width: 4px;
+    height: 45px;
+    background: linear-gradient(180deg, rgba(139, 92, 246, 0.8), rgba(6, 182, 212, 0.5));
+}
+
+.strap-clip {
+    width: 22px;
+    height: 12px;
+    background: #475569;
+    border-radius: 4px;
+    margin-bottom: -6px;
+    z-index: 2;
+}
+
+.lanyard-card {
+    width: 320px;
+    padding: 0 1.5rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transform-style: preserve-3d;
+    position: relative;
+    overflow: hidden;
+}
+
+.lanyard-banner {
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    height: 120px;
+    background: linear-gradient(135deg, #7c3aed 0%, #d946ef 50%, #2563eb 100%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+}
+
+html[data-theme="light"] .lanyard-banner {
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #3b82f6 100%);
+    opacity: 0.85;
+}
+
+/* Card Top Clip Slot */
+.lanyard-card-clip-slot {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    pointer-events: none;
+}
+
+.clip-slot-outer {
+    width: 36px;
+    height: 10px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clip-slot-inner {
+    width: 28px;
+    height: 4px;
+    border-radius: 9999px;
+    background: #090d16;
+}
+
+/* Custom Barcode Bars Styling */
+.barcode-bars-container {
+    display: flex;
+    gap: 2.5px;
+    align-items: flex-end;
+    height: 28px;
+    padding: 2px 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+html[data-theme="dark"] .barcode-bars-container {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.barcode-bar-item {
+    background-color: var(--text-main);
+    border-radius: 1px;
+}
+
+.lanyard-avatar-wrapper {
+    margin-top: -45px;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0.8rem;
+}
+
+.avatar-gradient-ring {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    padding: 3px;
+}
+
+.lanyard-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+}
+
+.lanyard-avatar svg {
+    width: 45px;
+    height: 45px;
+}
+
+.lanyard-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+    color: var(--text-main);
+}
+
+.lanyard-role-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    color: var(--text-main);
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+.lanyard-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    width: 100%;
+    margin-bottom: 1.2rem;
+}
+
+.meta-box {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--card-border);
+    padding: 0.5rem 0.6rem;
+    border-radius: 10px;
+    text-align: left;
+}
+
+html[data-theme="light"] .meta-box {
+    background: rgba(248, 250, 252, 0.9);
+}
+
+.meta-lbl {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.meta-val {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.status-active {
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #10b981;
+}
+
+.lanyard-barcode-box {
+    width: 100%;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--card-border);
+}
+
+.barcode-graphic-lines {
+    height: 20px;
+    background: repeating-linear-gradient(90deg, var(--text-main) 0, var(--text-main) 2px, transparent 2px, transparent 4px, var(--text-main) 4px, var(--text-main) 7px, transparent 7px, transparent 9px);
+    opacity: 0.75;
+    margin-bottom: 6px;
+}
+
+.barcode-labels-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.status-active {
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #10b981;
+}
+
+.lanyard-barcode-box {
+    width: 100%;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--card-border);
+}
+
+.barcode-lines {
+    height: 18px;
+    background: repeating-linear-gradient(90deg, var(--text-main) 0, var(--text-main) 2px, transparent 2px, transparent 4px);
+    opacity: 0.6;
+    margin-bottom: 4px;
+}
+
+.barcode-text {
+    font-family: monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+.lanyard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.8rem;
+}
+
+/* ==========================================
+   3. Infinite Tech Stack Ticker Marquee
+   ========================================== */
+.tech-ticker-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 1.5rem 0;
+    position: relative;
+    margin: 3rem 0;
+}
+
+.tech-ticker-track {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: max-content;
+    animation: marqueeScroll 25s linear infinite;
+}
+
+.tech-ticker-container:hover .tech-ticker-track {
+    animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.333%); }
+}
+
+.ticker-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 9999px;
+    white-space: nowrap;
+}
+
+.ticker-badge .badge-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* ==========================================
+   4. Bento Grid & Services Layout
+   ========================================== */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.service-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+}
+
+.service-icon {
+    font-size: 2rem;
+}
+
+.service-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    background: rgba(6, 182, 212, 0.12);
+    color: var(--accent-cyan);
+}
+
+.service-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--text-main);
+}
+
+.service-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* About Bento Grid */
+.about-bento-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 1.5rem;
+}
+
+.about-text-panel {
+    padding: 2.2rem;
+}
+
+.about-text-panel h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--accent-cyan);
+}
+
+.about-text-panel p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.about-highlights-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--card-border);
+}
+
+.highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.hl-icon {
+    font-size: 1.5rem;
+}
+
+.highlight-item strong {
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.highlight-item p {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+}
+
+.bento-stats-matrix {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.bento-metric-card {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.metric-icon {
+    font-size: 1.4rem;
+}
+
+.metric-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.metric-value {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* Projects Bento Grid */
+.projects-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+}
+
+.bento-project-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.bento-project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--card-accent);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bento-project-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.size-large { grid-column: span 7; }
+.size-medium { grid-column: span 5; }
+.size-full { grid-column: span 12; }
+
+.project-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.project-icon {
+    font-size: 1.8rem;
+}
+
+.project-badge-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--accent-purple);
+}
+
+.project-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+    color: var(--text-main);
+}
+
+.project-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.project-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+}
+
+.project-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tech-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+}
+
+.project-action-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--text-main);
+    color: var(--page-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+}
+
+.bento-project-card:hover .project-action-btn {
+    transform: scale(1.1) rotate(45deg);
+}
+
+/* ==========================================
+   5. Vertical Spine Timeline (Experience & Education)
+   ========================================== */
+.timeline-spine-wrapper {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.timeline-spine-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, #8b5cf6, #06b6d4, #10b981);
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.timeline-node-item {
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.timeline-spine-node {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #06b6d4;
+    transform: translateX(-50%);
+    z-index: 2;
+    box-shadow: 0 0 12px #06b6d4;
+}
+
+.node-glow-ring {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #8b5cf6;
+    animation: nodePulse 2s infinite;
+}
+
+@keyframes nodePulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.4); opacity: 0; }
+}
+
+.timeline-node-card {
+    width: calc(100% - 40px);
+    padding: 1.8rem;
+}
+
+.node-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 0.8rem;
+}
+
+.node-period {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.node-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-purple);
+}
+
+.node-location {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.node-role {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.3rem;
+}
+
+.node-company {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
+
+.node-program-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--accent-purple);
+    margin-bottom: 0.8rem;
+}
+
+.node-bullets {
+    padding-left: 1.2rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+}
+
+.node-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.exp-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--accent-purple);
+}
+
+/* Education Cards Bento */
+.edu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.edu-card-bento {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.edu-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.edu-icon-badge {
+    font-size: 1.8rem;
+}
+
+.edu-tag-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--accent-green);
+}
+
+.edu-meta-row {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+}
+
+.edu-degree-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.3rem;
+}
+
+.edu-institution-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    margin-bottom: 0.8rem;
+}
+
+.edu-desc-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+}
+
+.edu-highlights-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.edu-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   6. Floating Bottom Navigation Dock
+   ========================================== */
+.floating-dock-wrapper {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    pointer-events: none;
+}
+
+.floating-dock {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 9999px;
+    pointer-events: auto;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.dock-item {
+    background: transparent;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.dock-item:hover, .dock-item.active {
+    background: rgba(139, 92, 246, 0.25);
+    transform: translateY(-4px) scale(1.15);
+}
+
+.dock-tooltip {
+    position: absolute;
+    top: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.9);
+    color: #ffffff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.dock-item:hover .dock-tooltip {
+    opacity: 1;
+}
+
+/* ==========================================
+   7. Ambient Footer Banner & Page Bottom
+   ========================================== */
+.site-footer {
+    padding: 4rem 1.5rem 6rem;
+    position: relative;
+    border-top: 1px solid var(--card-border);
+}
+
+.footer-container-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.footer-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+
+.footer-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.logo-badge-small {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-to-top-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    border: 1px solid var(--card-border);
+    transition: transform 0.2s ease;
+}
+
+.back-to-top-btn:hover {
+    transform: translateY(-2px);
+}
+
+.footer-ambient-banner {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.banner-pill-badge {
+    display: inline-block;
+    padding: 0.3rem 0.9rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--accent-purple);
+    margin-bottom: 1rem;
+}
+
+.footer-banner-heading {
+    font-size: clamp(1.8rem, 5vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    background: linear-gradient(180deg, var(--text-main) 0%, rgba(148, 163, 184, 0.3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer-nav-links-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.footer-nav-links-row a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.footer-nav-links-row a:hover {
+    color: var(--accent-cyan);
+}
+
+.footer-divider-line {
+    width: 100%;
+    height: 1px;
+    background: var(--card-border);
+    margin-bottom: 2rem;
+}
+
+.footer-bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-social-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.copyright-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 992px) {
+    .hero-section-grid {
+        grid-template-columns: 1fr;
+        padding-top: 3rem;
+    }
+
+    .hero-lanyard-col {
+        justify-content: center;
+    }
+    
+    .about-bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .services-grid, .edu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .size-large, .size-medium, .size-full {
+        grid-column: span 1;
+    }
+
+    .pill-nav-links {
+        display: none;
+    }
+
+    .pill-nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: var(--page-bg);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        padding: 1.5rem;
+        border-radius: 20px;
+        border: 1px solid var(--card-border);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        z-index: 2005;
+    }
+
+    .mobile-toggle-btn {
+        display: flex;
+    }
+}
+
+/* Light Mode Social Icons & Button Contrast Overrides */
+html[data-theme="light"] .social-icon-btn svg {
+    color: var(--text-primary-light);
+    fill: var(--text-primary-light);
+}
+
+html[data-theme="light"] .social-icon-btn {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+html[data-theme="light"] .social-icon-btn:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: var(--accent-purple);
+}
+
+/* ==========================================
+   Light Mode Comprehensive Theme & Contrast Overrides
+   ========================================== */
+html[data-theme="light"] {
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --border-light: rgba(0, 0, 0, 0.08);
+}
+
+/* Skills Cards & Tab Overrides in Light Mode */
+html[data-theme="light"] .skill-card-box {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="light"] .skill-card-box:hover {
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .skill-card-name {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .skill-card-level {
+    color: #64748b;
+}
+
+html[data-theme="light"] .skill-card-arrow {
+    color: #64748b;
+}
+
+html[data-theme="light"] .currently-exploring-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="light"] .exploring-title {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .exploring-tag {
+    background: rgba(0, 0, 0, 0.04);
+    color: #334155;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================
+   Skills Section Light Mode System
+   ========================================== */
+html[data-theme="light"] .skills-tabs {
+    background: rgba(241, 245, 249, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .tab-btn {
+    background: transparent;
+    color: #475569;
+    border: 1px solid transparent;
+}
+
+html[data-theme="light"] .tab-btn .tab-count {
+    background: rgba(0, 0, 0, 0.07);
+    color: #334155;
+}
+
+html[data-theme="light"] .tab-btn:hover {
+    color: #0f172a;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .tab-btn.active {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: var(--tab-accent, #8b5cf6);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .tab-btn.active .tab-count {
+    background: var(--tab-accent, #8b5cf6);
+    color: #ffffff;
+}
+
+html[data-theme="light"] .summary-pill {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #334155;
+}
+
+/* Certifications Cards in Light Mode */
+html[data-theme="light"] .cert-card,
+html[data-theme="light"] .tilt-card {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="light"] .cert-card:hover,
+html[data-theme="light"] .tilt-card:hover {
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .cert-title {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .cert-authority,
+html[data-theme="light"] .cert-desc {
+    color: #475569;
+}
+
+html[data-theme="light"] .cert-date {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #0284c7;
+}
+
+html[data-theme="light"] .cert-modal-content {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="light"] .cert-modal-title {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .cert-modal-meta {
+    color: #475569;
+}
+
+/* GitHub & LeetCode Platform Cards & Modals in Light Mode */
+html[data-theme="light"] .platform-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .platform-card:hover {
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .platform-title-info h3 {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .platform-handle {
+    color: #64748b;
+}
+
+html[data-theme="light"] .click-hint-badge {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #475569;
+}
+
+html[data-theme="light"] .platform-summary-stats {
+    background: rgba(241, 245, 249, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .p-stat .p-val {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .p-stat .p-lbl {
+    color: #64748b;
+}
+
+html[data-theme="light"] .profile-url-preview {
+    color: #64748b;
+}
+
+html[data-theme="light"] .activity-footer-sync {
+    color: #475569;
+}
+
+html[data-theme="light"] .activity-modal-content {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="light"] .activity-modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .modal-title-wrap h3 {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .modal-profile-link {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .modal-profile-link:hover {
+    color: #0369a1 !important;
+}
+
+html[data-theme="light"] .modal-close-btn {
+    background: rgba(0, 0, 0, 0.06);
+    color: #0f172a;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .modal-close-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+html[data-theme="light"] .modal-inner-card {
+    background: rgba(248, 250, 252, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+html[data-theme="light"] .inner-card-title {
+    color: #0f172a !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .gh-metric-row span {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .gh-metric-row strong {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .grade-circle {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: #22c55e;
+    color: #15803d !important;
+}
+
+html[data-theme="light"] .lang-legend-item .lang-name {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .lang-legend-item .lang-pct {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .hover-hint-tag {
+    background: rgba(0, 0, 0, 0.04);
+    color: #475569 !important;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .lc-contest-graph-container {
+    background: rgba(248, 250, 252, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .lc-graph-label {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .lc-graph-value {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .lc-graph-value small {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .lc-circle-wrapper .circle-bg {
+    stroke: rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] .lc-circle-text .lc-count {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .lc-circle-text .lc-total {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .lc-circle-text .lc-label {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .diff-name {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .diff-val {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .diff-val small {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .diff-bar-bg {
+    background: rgba(0, 0, 0, 0.06) !important;
+}
+
+html[data-theme="light"] .c-stat-box .c-label {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .c-stat-box .c-val {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .activity-modal-footer {
+    background: rgba(241, 245, 249, 0.8);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Timeline & Bento Grid Cards in Light Mode */
+html[data-theme="light"] .timeline-node-card,
+html[data-theme="light"] .edu-card-bento,
+html[data-theme="light"] .service-card,
+html[data-theme="light"] .bento-metric-card,
+html[data-theme="light"] .bento-project-card,
+html[data-theme="light"] .about-text-panel {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .tech-tag,
+html[data-theme="light"] .edu-tag {
+    background: rgba(0, 0, 0, 0.05);
+    color: #475569;
+}
+
+html[data-theme="light"] .floating-dock {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .dock-item {
+    color: #334155;
+}
+
+html[data-theme="light"] .dock-item:hover,
+html[data-theme="light"] .dock-item.active {
+    background: rgba(139, 92, 246, 0.15);
+    color: #0f172a;
+}
+
+/* Light Mode LeetCode Icon Swap */
+html[data-theme="light"] .leetcode-icon-img {
+    content: url("https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/leetcode.webp");
 }

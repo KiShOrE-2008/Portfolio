@@ -13,30 +13,29 @@ export default function Experience({ onOpenLightbox }) {
         const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (isReducedMotion) return;
 
-        gsap.fromTo('.section-header',
-            { y: 30, opacity: 0 },
+        gsap.fromTo('.timeline-spine-line',
+            { scaleY: 0, transformOrigin: 'top center' },
             {
-                y: 0,
-                opacity: 1,
-                duration: 0.7,
-                ease: 'power3.out',
+                scaleY: 1,
+                ease: 'none',
                 scrollTrigger: {
-                    trigger: expRef.current.querySelector('.section-header'),
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse'
+                    trigger: expRef.current.querySelector('.timeline-spine-wrapper'),
+                    start: 'top 75%',
+                    end: 'bottom 25%',
+                    scrub: 1
                 }
             }
         );
 
-        gsap.fromTo('.timeline-content',
-            { y: 40, opacity: 0 },
+        gsap.fromTo('.timeline-node-card',
+            { y: 35, opacity: 0 },
             {
                 y: 0,
                 opacity: 1,
                 duration: 0.8,
                 ease: 'power3.out',
                 scrollTrigger: {
-                    trigger: expRef.current.querySelector('.timeline'),
+                    trigger: expRef.current.querySelector('.timeline-spine-wrapper'),
                     start: 'top 80%',
                     toggleActions: 'play none none reverse'
                 }
@@ -45,34 +44,51 @@ export default function Experience({ onOpenLightbox }) {
     }, { scope: expRef });
 
     return (
-        <div ref={expRef} className="experience-container-inner" style={{ width: '100%' }}>
+        <div ref={expRef} className="experience-section-inner" style={{ width: '100%' }}>
             <div className="section-header">
-                <h2 className="section-title">Work Experience</h2>
+                <span className="section-eyebrow">CAREER & PRACTICAL EXPERIENCE</span>
+                <h2 className="section-title">
+                    Work Experience & <span className="gradient-text">Internships</span>
+                </h2>
                 <div className="section-divider"></div>
             </div>
 
-            <div className="timeline">
-                {/* UP Police Internship */}
-                <div className="timeline-item">
-                    <TiltCard 
-                        className="timeline-content tilt-card clickable-card"
+            <div className="timeline-spine-wrapper">
+                {/* Glowing Vertical Line Spine */}
+                <div className="timeline-spine-line"></div>
+
+                {/* UP Police Internship Node */}
+                <div className="timeline-node-item">
+                    <div className="timeline-spine-node">
+                        <span className="node-glow-ring"></span>
+                    </div>
+
+                    <TiltCard
+                        className="timeline-node-card glass-panel clickable-card"
                         onClick={() => onOpenLightbox(0)}
-                        style={{ cursor: 'pointer' }}
                     >
-                        <div className="timeline-header">
-                            <span className="time-period">June 2026</span>
-                            <span className="view-cert-badge">🔍 View Gallery</span>
-                            <span className="location">Moradabad, India</span>
+                        <div className="node-header">
+                            <span className="node-period">June 2026</span>
+                            <span className="node-badge">🔍 View 7-Photo Gallery</span>
+                            <span className="node-location">Moradabad, India</span>
                         </div>
-                        <h3 className="role-title">Cyber Security Student Intern</h3>
-                        <span className="company-name">Uttar Pradesh Police ( "सुरक्षा आपकी, संकल्प हमारा" )</span>
-                        <div className="timeline-body">
-                            <p className="internship-badge">Amroha Police Cyber Security Internship Program (APCSIP-2026)</p>
-                            <ul className="experience-bullets">
-                                <li>Completed the APCSIP-2026, gaining hands-on experience in cybersecurity, cybercrime investigation, digital forensics, and cyber awareness.</li>
-                                <li>Learned about cybercrime investigation methodologies, digital security practices, and emerging cyber threats.</li>
-                                <li>Collaborated with industry experts, law enforcement professionals, and peers during technical sessions and workshops.</li>
-                            </ul>
+
+                        <h3 className="node-role">Cyber Security Student Intern</h3>
+                        <div className="node-company">Uttar Pradesh Police ( "सुरक्षा आपकी, संकल्प हमारा" )</div>
+                        
+                        <p className="node-program-title">Amroha Police Cyber Security Internship Program (APCSIP-2026)</p>
+
+                        <ul className="node-bullets">
+                            <li>Completed the APCSIP-2026, gaining hands-on experience in cybersecurity, cybercrime investigation, digital forensics, and cyber awareness.</li>
+                            <li>Learned about cybercrime investigation methodologies, digital security practices, and emerging cyber threats.</li>
+                            <li>Collaborated with industry experts, law enforcement professionals, and peers during technical sessions and workshops.</li>
+                        </ul>
+
+                        <div className="node-tags-row">
+                            <span className="exp-tag">Cybersecurity</span>
+                            <span className="exp-tag">Digital Forensics</span>
+                            <span className="exp-tag">Network Auditing</span>
+                            <span className="exp-tag">Cyber Awareness</span>
                         </div>
                     </TiltCard>
                 </div>
@@ -80,4 +96,3 @@ export default function Experience({ onOpenLightbox }) {
         </div>
     );
 }
-

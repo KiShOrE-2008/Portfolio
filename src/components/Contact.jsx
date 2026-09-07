@@ -150,7 +150,9 @@ export default function Contact() {
                             </div>
                         </a>
                         <div className="method-item">
-                            <span className="method-icon">📍</span>
+                            <span className="method-icon">
+                                <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/google-maps.webp" alt="Location" width="22" height="22" style={{ objectFit: 'contain', verticalAlign: 'middle' }} />
+                            </span>
                             <div className="method-details">
                                 <span className="method-label">Location</span>
                                 <span className="method-val">Chennai, Tamil Nadu, India</span>
