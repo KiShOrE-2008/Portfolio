@@ -2754,10 +2754,10 @@ body.no-scroll {
     font-size: 3.2rem;
     font-weight: 800;
     letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #ffffff 30%, #38bdf8 70%, #39d353 100%);
+    background: linear-gradient(135deg, #ffffff 25%, #38bdf8 65%, #00d2ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.45));
+    filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.55));
     margin: 0;
 }
 
@@ -2834,11 +2834,11 @@ body.no-scroll {
 }
 
 .hud-val.val-online {
-    color: #39d353;
+    color: #38bdf8;
 }
 .hud-val.val-online .dot {
-    background-color: #39d353;
-    box-shadow: 0 0 8px #39d353;
+    background-color: #38bdf8;
+    box-shadow: 0 0 8px #00d2ff;
 }
 
 .hud-val.val-init,
@@ -2900,13 +2900,13 @@ body.no-scroll {
 }
 
 .network-sync-status.status-ready {
-    color: #39d353;
-    text-shadow: 0 0 12px rgba(57, 211, 83, 0.6);
+    color: #00d2ff;
+    text-shadow: 0 0 12px rgba(0, 210, 255, 0.7);
 }
 
 .network-sync-status.status-ready .sync-dot {
-    background-color: #39d353;
-    box-shadow: 0 0 10px #39d353;
+    background-color: #00d2ff;
+    box-shadow: 0 0 10px #00d2ff;
     animation: none;
 }
 

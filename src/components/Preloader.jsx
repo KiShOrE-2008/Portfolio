@@ -164,7 +164,7 @@ export default function Preloader({ onComplete }) {
             radius: 4.5,
             currentRadius: 0,
             opacity: 1,
-            color: '#39d353',
+            color: '#00d2ff',
             isCenter: true,
             syncIndex: 0,
         });
@@ -188,7 +188,7 @@ export default function Preloader({ onComplete }) {
                 radius: Math.random() * 1.6 + 1.2,
                 currentRadius: 0,
                 opacity: 0,
-                color: Math.random() < 0.65 ? '#39d353' : '#38bdf8',
+                color: Math.random() < 0.65 ? '#00d2ff' : '#38bdf8',
                 vx: (Math.random() - 0.5) * 0.35,
                 vy: (Math.random() - 0.5) * 0.35,
                 isCenter: false,
@@ -212,7 +212,7 @@ export default function Preloader({ onComplete }) {
                 toY: toNode.y,
                 progress: 0,
                 speed: Math.random() * 0.025 + 0.015,
-                color: Math.random() < 0.5 ? '#39d353' : '#38bdf8',
+                color: Math.random() < 0.5 ? '#00d2ff' : '#38bdf8',
             });
         };
 
@@ -269,7 +269,7 @@ export default function Preloader({ onComplete }) {
 
                     // Handshake Pulse Glow when reaching 100%
                     if (isSynchronized && (n.isCenter || isReady)) {
-                        ctx.shadowColor = '#39d353';
+                        ctx.shadowColor = '#00d2ff';
                         ctx.shadowBlur = isReady ? 18 + Math.sin(handshakePulse * Math.PI) * 12 : 8;
                         ctx.fill();
                         ctx.shadowBlur = 0;
@@ -302,7 +302,7 @@ export default function Preloader({ onComplete }) {
                             ctx.beginPath();
                             ctx.moveTo(n1.x, n1.y);
                             ctx.lineTo(n2.x, n2.y);
-                            ctx.strokeStyle = bothSync ? (n1.color === '#39d353' ? '#39d353' : '#38bdf8') : '#334155';
+                            ctx.strokeStyle = bothSync ? (n1.color === '#00d2ff' ? '#00d2ff' : '#38bdf8') : '#334155';
                             ctx.globalAlpha = lineAlpha;
                             ctx.lineWidth = bothSync ? 1.0 : 0.6;
                             ctx.stroke();
@@ -359,15 +359,15 @@ export default function Preloader({ onComplete }) {
 
                 ctx.beginPath();
                 ctx.arc(cx, cy, exitWaveRadius, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(57, 211, 83, 0.65)';
+                ctx.strokeStyle = 'rgba(0, 210, 255, 0.85)';
                 ctx.lineWidth = 4;
-                ctx.shadowColor = '#39d353';
+                ctx.shadowColor = '#00d2ff';
                 ctx.shadowBlur = 30;
                 ctx.stroke();
                 ctx.shadowBlur = 0;
 
                 const radialGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, exitWaveRadius);
-                radialGlow.addColorStop(0, 'rgba(57, 211, 83, 0.18)');
+                radialGlow.addColorStop(0, 'rgba(0, 210, 255, 0.22)');
                 radialGlow.addColorStop(0.85, 'rgba(56, 189, 248, 0.08)');
                 radialGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
