@@ -46,6 +46,7 @@ export default function Experience({ onOpenLightbox }) {
     return (
         <div ref={expRef} className="experience-section-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">04 // EXPERIENCE</span>
                 <span className="section-eyebrow">CAREER & PRACTICAL EXPERIENCE</span>
                 <h2 className="section-title">
                     Work Experience & <span className="gradient-text">Internships</span>

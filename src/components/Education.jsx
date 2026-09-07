@@ -55,6 +55,7 @@ export default function Education() {
     return (
         <div ref={eduRef} className="education-section-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">03 // EDUCATION</span>
                 <span className="section-eyebrow">ACADEMIC BACKGROUND</span>
                 <h2 className="section-title">
                     Education & <span className="gradient-text">Journey</span>

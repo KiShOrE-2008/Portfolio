@@ -69,6 +69,7 @@ export default function About() {
     return (
         <div ref={aboutRef} className="about-section-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">01 // ABOUT</span>
                 <span className="section-eyebrow">ABOUT ME & PHILOSOPHY</span>
                 <h2 className="section-title">
                     Passionate about <span className="gradient-text">Digital & Cyber Excellence</span>

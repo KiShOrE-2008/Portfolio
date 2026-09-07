@@ -452,6 +452,7 @@ body {
 
 .gradient-text {
     background: linear-gradient(135deg, var(--accent-blue) 10%, var(--accent-purple) 90%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -752,6 +753,7 @@ body {
     font-weight: 800;
     color: var(--accent-blue);
     background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
@@ -1347,232 +1349,7 @@ html[data-theme="light"] .form-group textarea:focus {
     color: var(--accent-pink);
 }
 
-/* Footer Styles - Bounded Glass Card */
-.footer {
-    max-width: 1200px;
-    width: calc(100% - 3rem);
-    margin: 4rem auto 3rem auto;
-    background: rgba(12, 16, 24, 0.65);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 24px;
-    padding: 4rem 3rem 2.5rem;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 143, 0.04);
-}
-
-.footer-container {
-    max-width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-}
-
-.footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 3rem;
-    text-align: left;
-}
-
-.footer-brand {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.footer-logo {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-decoration: none;
-    color: var(--text-primary);
-    display: inline-flex;
-    align-items: center;
-}
-
-.footer-logo .logo-symbol {
-    color: var(--accent-blue);
-    font-family: var(--font-mono);
-}
-
-.footer-logo .logo-accent {
-    color: var(--accent-purple);
-}
-
-.footer-bio {
-    font-size: 0.95rem;
-    color: var(--text-secondary) !important;
-    line-height: 1.6;
-}
-
-.footer-socials {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.5rem;
-}
-
-.social-icon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-light);
-    color: var(--text-primary);
-    font-size: 1.2rem;
-    text-decoration: none;
-    transition: var(--transition-smooth);
-    cursor: pointer;
-}
-
-.social-icon-btn:hover {
-    background: rgba(0, 242, 143, 0.08);
-    border-color: var(--accent-blue);
-    transform: translateY(-3px);
-}
-
-.footer-links-col h4,
-.footer-contact-info h4 {
-    font-family: var(--font-heading);
-    color: var(--text-primary);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.5px;
-    position: relative;
-}
-
-.footer-links-col h4::after,
-.footer-contact-info h4::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 24px;
-    height: 2px;
-    background: var(--accent-purple);
-    border-radius: 1px;
-}
-
-.footer-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.footer-links a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: var(--transition-smooth);
-}
-
-.footer-links a:hover {
-    color: var(--accent-blue);
-    padding-left: 5px;
-}
-
-.footer-contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.footer-contact-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-.footer-contact-details p {
-    font-size: 0.95rem;
-    color: var(--text-secondary) !important;
-}
-
-.footer-contact-details a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: var(--transition-smooth);
-}
-
-.footer-contact-details a:hover {
-    color: var(--accent-blue);
-}
-
-.back-to-top-btn {
-    align-self: flex-start;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    background: transparent;
-    border: 1px solid var(--border-light);
-    color: var(--text-primary);
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    margin-top: 0.5rem;
-}
-
-.back-to-top-btn:hover {
-    border-color: var(--accent-purple);
-    background: rgba(52, 211, 153, 0.08);
-    transform: translateY(-2px);
-}
-
-.footer-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--border-light);
-}
-
-.footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.footer-bottom p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-.footer-bottom .footer-tech {
-    font-family: var(--font-mono);
-}
-
-/* Responsive Footer */
-@media (max-width: 992px) {
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 2.5rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .footer {
-        padding: 4rem 1.5rem 2.5rem;
-    }
-    
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.8rem;
-    }
-}
+/* Cleaned up old footer styles */
 
 /* ==========================================================================
    Experience Section (Timeline)
@@ -2755,6 +2532,7 @@ body.no-scroll {
     font-weight: 800;
     letter-spacing: -0.5px;
     background: linear-gradient(135deg, #ffffff 25%, #38bdf8 65%, #00d2ff 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.55));
@@ -4250,6 +4028,7 @@ html[data-theme="light"] .dotted-bg-grid {
 /* Gradient Text */
 .gradient-text, .gradient-title-text {
     background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
@@ -5390,11 +5169,20 @@ html[data-theme="light"] .meta-box {
     font-size: 1.1rem;
     cursor: pointer;
     position: relative;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    color: #cbd5e1;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.dock-item .dock-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
 }
 
 .dock-item:hover, .dock-item.active {
-    background: rgba(139, 92, 246, 0.25);
+    background: rgba(139, 92, 246, 0.35);
+    color: #ffffff;
     transform: translateY(-4px) scale(1.15);
 }
 
@@ -5403,8 +5191,9 @@ html[data-theme="light"] .meta-box {
     top: -34px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(15, 23, 42, 0.95);
     color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 0.2rem 0.6rem;
     border-radius: 6px;
     font-size: 0.7rem;
@@ -5413,6 +5202,7 @@ html[data-theme="light"] .meta-box {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .dock-item:hover .dock-tooltip {
@@ -5423,21 +5213,26 @@ html[data-theme="light"] .meta-box {
    7. Ambient Footer Banner & Page Bottom
    ========================================== */
 .site-footer {
-    padding: 4rem 1.5rem 6rem;
+    padding: 4rem 1.5rem 8rem;
     position: relative;
     border-top: 1px solid var(--card-border);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .footer-container-inner {
     max-width: 1100px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .footer-top-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
+    gap: 1rem;
+    width: 100%;
 }
 
 .footer-brand-logo {
@@ -5448,6 +5243,7 @@ html[data-theme="light"] .meta-box {
     color: var(--text-main);
     font-weight: 800;
     font-size: 1.1rem;
+    white-space: nowrap;
 }
 
 .logo-badge-small {
@@ -5461,6 +5257,7 @@ html[data-theme="light"] .meta-box {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .back-to-top-btn {
@@ -5471,34 +5268,58 @@ html[data-theme="light"] .meta-box {
     color: var(--text-main);
     cursor: pointer;
     border: 1px solid var(--card-border);
-    transition: transform 0.2s ease;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
 }
 
 .back-to-top-btn:hover {
     transform: translateY(-2px);
+    border-color: var(--accent-purple);
 }
 
 .footer-ambient-banner {
     text-align: center;
     margin-bottom: 3rem;
+    padding: 3.5rem 2rem;
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+html[data-theme="light"] .footer-ambient-banner {
+    background: rgba(255, 255, 255, 0.65);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .banner-pill-badge {
     display: inline-block;
-    padding: 0.3rem 0.9rem;
+    padding: 0.35rem 1rem;
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.1em;
     color: var(--accent-purple);
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
 .footer-banner-heading {
     font-size: clamp(1.8rem, 5vw, 3.8rem);
     font-weight: 900;
     letter-spacing: 0.05em;
-    background: linear-gradient(180deg, var(--text-main) 0%, rgba(148, 163, 184, 0.3) 100%);
+    line-height: 1.15;
+    background: linear-gradient(180deg, var(--text-main) 0%, rgba(148, 163, 184, 0.6) 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -5508,20 +5329,25 @@ html[data-theme="light"] .meta-box {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 1.2rem 2rem;
+    margin-bottom: 2.5rem;
+    width: 100%;
 }
 
-.footer-nav-links-row a {
-    color: var(--text-muted);
+.footer-nav-links-row a,
+.footer-nav-links-row a:visited {
+    color: #94a3b8;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    padding: 0.2rem 0.5rem;
     transition: color 0.2s ease;
+    white-space: nowrap;
 }
 
-.footer-nav-links-row a:hover {
-    color: var(--accent-cyan);
+.footer-nav-links-row a:hover,
+.footer-nav-links-row a:focus {
+    color: #38bdf8;
 }
 
 .footer-divider-line {
@@ -5536,7 +5362,8 @@ html[data-theme="light"] .meta-box {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.2rem;
+    width: 100%;
 }
 
 .footer-social-icons {
@@ -5547,7 +5374,8 @@ html[data-theme="light"] .meta-box {
 
 .copyright-text {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: #94a3b8;
+    margin: 0;
 }
 
 /* Responsive Media Queries */
@@ -5973,4 +5801,120 @@ html[data-theme="light"] .dock-item.active {
 /* Light Mode LeetCode Icon Swap */
 html[data-theme="light"] .leetcode-icon-img {
     content: url("https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/leetcode.webp");
+}
+
+/* Technical Section System Label */
+.section-technical-tag {
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--accent-cyan, #06b6d4);
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+}
+
+/* Telemetry Channel Badge in Contact Card */
+.telemetry-channel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 9999px;
+    padding: 0.25rem 0.8rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #06b6d4;
+    letter-spacing: 1px;
+    margin-bottom: 1.2rem;
+}
+
+.telemetry-channel-badge .channel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #06b6d4;
+    box-shadow: 0 0 8px #06b6d4;
+    animation: dotPulse 1.2s infinite alternate;
+}
+
+/* Copy Email Row Styling */
+.email-method-item {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.email-method-item:hover {
+    border-color: rgba(6, 182, 212, 0.35);
+    background: rgba(6, 182, 212, 0.04);
+}
+
+.copy-email-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 0.3rem 0.75rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-cyan, #06b6d4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copy-email-btn:hover {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: #06b6d4;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+html[data-theme="light"] .copy-email-btn {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #0284c7;
+}
+
+html[data-theme="light"] .copy-email-btn:hover {
+    background: rgba(2, 132, 199, 0.1);
+    color: #0369a1;
+}
+
+/* Animated Arrow Button */
+.contact-send-btn .btn-arrow-icon {
+    display: inline-block;
+    margin-left: 0.4rem;
+    transition: transform 0.25s ease;
+}
+
+.contact-send-btn:hover .btn-arrow-icon {
+    transform: translateX(5px);
+}
+
+/* Nav Logo Light Mode Styling */
+html[data-theme="light"] .nav-logo {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .logo-name {
+    color: #0f172a;
+}
+
+html[data-theme="light"] .logo-sym-open,
+html[data-theme="light"] .logo-sym-close {
+    color: #0284c7;
+}
+
+html[data-theme="light"] .logo-ext {
+    color: #16a34a;
+}
+
+html[data-theme="light"] .nav-logo:hover .logo-name {
+    color: #0284c7;
+    text-shadow: 0 0 10px rgba(2, 132, 199, 0.25);
 }

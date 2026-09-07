@@ -1,14 +1,14 @@
 import React from 'react';
 
 const dockItems = [
-    { id: 'hero', label: 'Home', icon: '🏠' },
-    { id: 'about', label: 'About', icon: '👤' },
-    { id: 'what-i-do', label: 'Services', icon: '⚡' },
-    { id: 'education', label: 'Education', icon: '🎓' },
-    { id: 'experience', label: 'Experience', icon: '💼' },
-    { id: 'skills', label: 'Skills', icon: '🛠️' },
-    { id: 'projects', label: 'Projects', icon: '📁' },
-    { id: 'contact', label: 'Contact', icon: '💬' }
+    { id: 'hero', label: 'Home', icon: <i className="fas fa-home"></i> },
+    { id: 'about', label: 'About', icon: <i className="fas fa-user-astronaut"></i> },
+    { id: 'what-i-do', label: 'Services', icon: <i className="fas fa-bolt"></i> },
+    { id: 'education', label: 'Education', icon: <i className="fas fa-graduation-cap"></i> },
+    { id: 'experience', label: 'Experience', icon: <i className="fas fa-briefcase"></i> },
+    { id: 'skills', label: 'Skills', icon: <i className="fas fa-code"></i> },
+    { id: 'projects', label: 'Projects', icon: <i className="fas fa-folder-open"></i> },
+    { id: 'contact', label: 'Contact', icon: <i className="fas fa-paper-plane"></i> }
 ];
 
 export default function FloatingDock({ activeSection }) {
@@ -28,7 +28,6 @@ export default function FloatingDock({ activeSection }) {
                         className={`dock-item ${activeSection === item.id ? 'active' : ''}`}
                         onClick={() => handleScrollTo(item.id)}
                         aria-label={item.label}
-                        title={item.label}
                     >
                         <span className="dock-icon">{item.icon}</span>
                         <span className="dock-tooltip">{item.label}</span>

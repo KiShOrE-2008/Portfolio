@@ -90,6 +90,7 @@ export default function Projects() {
     return (
         <div ref={projectsRef} className="projects-section-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">07 // PROJECTS</span>
                 <span className="section-eyebrow">FEATURED PORTFOLIO PROJECTS</span>
                 <h2 className="section-title">
                     Selected <span className="gradient-text">Works</span>

@@ -475,6 +475,7 @@ export default function Skills() {
     return (
         <div ref={skillsRef} className="skills-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">05 // SKILLS</span>
                 <h2 className="section-title">Technical Skills</h2>
                 <p className="section-subtitle">
                     A practical toolkit spanning software development, cybersecurity, networking & cloud architecture.

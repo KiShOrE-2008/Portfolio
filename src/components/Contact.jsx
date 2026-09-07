@@ -125,9 +125,20 @@ export default function Contact() {
         }
     };
 
+    const [copiedEmail, setCopiedEmail] = useState(false);
+
+    const handleCopyEmail = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigator.clipboard.writeText('kv.kishorevijay@gmail.com');
+        setCopiedEmail(true);
+        setTimeout(() => setCopiedEmail(false), 2200);
+    };
+
     return (
         <div ref={contactRef} className="contact-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">09 // CONTACT</span>
                 <h2 className="section-title">Get In Touch</h2>
                 <div className="section-divider"></div>
             </div>
@@ -135,12 +146,16 @@ export default function Contact() {
             <div className="contact-grid">
                 {/* Contact Direct Card */}
                 <div className="contact-card info-card">
+                    <div className="telemetry-channel-badge">
+                        <span className="channel-dot"></span>
+                        <span>SECURE CHANNEL • AES-256 ONLINE</span>
+                    </div>
+
                     <h3>Contact Information</h3>
-                    <p>Have an interesting project, dynamic challenge, or simply want to chat about networking and
-                        security? Drop me a line!</p>
+                    <p>Have an interesting project, dynamic challenge, or simply want to chat about networking and security? Drop me a line!</p>
 
                     <div className="contact-methods">
-                        <a href="mailto:kv.kishorevijay@gmail.com" className="method-item" id="contactEmailLink">
+                        <div className="method-item email-method-item" onClick={handleCopyEmail}>
                             <span className="method-icon">
                                 <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/gmail.webp" alt="Email" width="22" height="22" style={{ objectFit: 'contain', verticalAlign: 'middle' }} />
                             </span>
@@ -148,7 +163,10 @@ export default function Contact() {
                                 <span className="method-label">Email</span>
                                 <span className="method-val">kv.kishorevijay@gmail.com</span>
                             </div>
-                        </a>
+                            <button className="copy-email-btn" type="button" aria-label="Copy Email">
+                                {copiedEmail ? '✓ Copied' : 'Copy ⧉'}
+                            </button>
+                        </div>
                         <div className="method-item">
                             <span className="method-icon">
                                 <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/google-maps.webp" alt="Location" width="22" height="22" style={{ objectFit: 'contain', verticalAlign: 'middle' }} />
@@ -181,7 +199,7 @@ export default function Contact() {
                                 id="contactName" 
                                 name="name" 
                                 required 
-                                placeholder="John Doe"
+                                placeholder="Your name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
@@ -193,7 +211,7 @@ export default function Contact() {
                                 id="contactEmail" 
                                 name="email" 
                                 required 
-                                placeholder="john@example.com"
+                                placeholder="you@example.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
@@ -205,7 +223,7 @@ export default function Contact() {
                                 name="message" 
                                 rows="5" 
                                 required
-                                placeholder="Your message here..."
+                                placeholder="Tell me about your project..."
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                             ></textarea>
@@ -213,11 +231,11 @@ export default function Contact() {
                         
                         <button 
                             type="submit" 
-                            className="btn btn-primary btn-block" 
+                            className="btn btn-primary btn-block contact-send-btn" 
                             id="contactSubmitBtn"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Sending...' : 'Send Message'}
+                            {isSubmitting ? 'Sending...' : <>Send Message <span className="btn-arrow-icon">→</span></>}
                         </button>
                         
                         {formStatus && (

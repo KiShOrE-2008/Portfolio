@@ -50,10 +50,10 @@ export default function Footer() {
                     </button>
                 </div>
 
-                {/* Large Ambient Title Banner */}
-                <div className="footer-ambient-banner">
-                    <div className="banner-pill-badge glass-panel">INNOVATE & SECURE</div>
-                    <h2 className="footer-banner-heading">CYBERSECURITY & SOFTWARE ENGINEER</h2>
+                {/* Large Ambient Title Banner Box */}
+                <div className="footer-ambient-banner glass-panel">
+                    <div className="banner-pill-badge glass-panel">INNOVATE &amp; SECURE</div>
+                    <h2 className="footer-banner-heading">CYBERSECURITY &amp; SOFTWARE ENGINEER</h2>
                 </div>
 
                 {/* Navigation Links Grid */}

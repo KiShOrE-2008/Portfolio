@@ -46,73 +46,83 @@ export default function LanyardCard() {
     // Physics State Refs (bypass React re-render churn for 120fps smoothness)
     const state = useRef({
         rotation: 0,
-        targetRotation: 0,
         tiltX: 0,
         tiltY: 0,
         targetTiltX: 0,
         targetTiltY: 0,
         velocity: 0,
         isDragging: false,
-        startX: 0,
-        startRotation: 0,
-        lastX: 0,
+        dragRotation: 0,       // Direct mouse-mapped rotation during drag
+        lastClientX: 0,
+        lastMoveTime: 0,
         hasMoved: false,
         isSpinning: false,
         spinProgress: 0,
-        spinStartAngle: 0
+        spinStartAngle: 0,
     });
 
     const rAFRef = useRef(null);
 
-    // 60FPS / 120FPS Continuous Physics & Render Loop
+    // Continuous Physics & Render Loop
     useEffect(() => {
         let lastTime = performance.now();
 
         const updatePhysics = (now) => {
-            const dt = Math.min((now - lastTime) / 1000, 0.033);
+            const rawDt = (now - lastTime) / 1000;
+            const dt = Math.min(rawDt, 0.05);
             lastTime = now;
 
             const s = state.current;
 
+            // Frame-rate independent smoothing factor
+            const smooth = (factor, delta) => 1 - Math.pow(1 - factor, delta * 60);
+
             if (s.isSpinning) {
-                // 360° Spin Animation
-                s.spinProgress += dt / 1.1; // 1.1s duration
+                s.spinProgress += dt / 1.1;
                 if (s.spinProgress >= 1) {
                     s.isSpinning = false;
                     s.spinProgress = 1;
                     s.rotation = 0;
-                    s.targetRotation = 0;
                     s.velocity = 0;
                 } else {
-                    // Ease out cubic
                     const eased = 1 - Math.pow(1 - s.spinProgress, 3);
                     s.rotation = s.spinStartAngle + 360 * eased;
                 }
+                const tiltSmooth = smooth(0.12, dt);
+                s.tiltX += (0 - s.tiltX) * tiltSmooth;
+                s.tiltY += (0 - s.tiltY) * tiltSmooth;
             } else if (s.isDragging) {
-                // Ultra-smooth Lerp while dragging (eliminates raw mouse jitter)
-                s.rotation += (s.targetRotation - s.rotation) * 0.35;
-                s.tiltX += (s.targetTiltX - s.tiltX) * 0.25;
-                s.tiltY += (s.targetTiltY - s.tiltY) * 0.25;
+                // Responsive tracking — card follows cursor closely during drag
+                const dragSmooth = smooth(0.85, dt);
+                s.rotation += (s.dragRotation - s.rotation) * dragSmooth;
+
+                const tiltSmooth = smooth(0.2, dt);
+                s.tiltX += (s.targetTiltX - s.tiltX) * tiltSmooth;
+                s.tiltY += (s.targetTiltY - s.tiltY) * tiltSmooth;
             } else {
-                // Damped Pendulum Physics Spring-Back (Correct non-inverted physics)
-                const k = 45; // Spring stiffness
-                const damping = 6; // Damping constant
+                // Realistic Pendulum Physics (~2 second natural damped oscillation)
+                const k = 34;        // Natural spring frequency (~0.93 Hz, ~1 swing per second)
+                const damping = 2.8; // Damping coefficient so it swings smoothly for ~2 seconds
                 const force = -k * s.rotation - damping * s.velocity;
                 s.velocity += force * dt;
                 s.rotation += s.velocity * dt;
 
-                // Snap to zero when settled
+                // Dynamic 3D tilt follows pendulum swing angle
+                s.targetTiltX = 0;
+                s.targetTiltY = Math.max(-10, Math.min(10, -s.rotation * 0.15));
+
                 if (Math.abs(s.rotation) < 0.05 && Math.abs(s.velocity) < 0.05) {
                     s.rotation = 0;
                     s.velocity = 0;
+                    s.targetTiltY = 0;
                 }
 
-                // Damp hover tilt back to zero
-                s.tiltX += (s.targetTiltX - s.tiltX) * 0.2;
-                s.tiltY += (s.targetTiltY - s.tiltY) * 0.2;
+                const tiltSmooth = smooth(0.18, dt);
+                s.tiltX += (s.targetTiltX - s.tiltX) * tiltSmooth;
+                s.tiltY += (s.targetTiltY - s.tiltY) * tiltSmooth;
             }
 
-            // Apply direct hardware-accelerated transforms (0 React re-renders = 100% fluid)
+            // Apply transforms
             if (armRef.current) {
                 armRef.current.style.transform = `rotate(${s.rotation}deg)`;
             }
@@ -138,35 +148,42 @@ export default function LanyardCard() {
         const s = state.current;
         s.isDragging = true;
         s.isSpinning = false;
-        s.startX = e.clientX;
-        s.lastX = e.clientX;
-        s.startRotation = s.rotation;
+        s.lastClientX = e.clientX;
+        s.lastMoveTime = performance.now();
+        s.dragRotation = s.rotation; // Start from current position — no jump
         s.velocity = 0;
         s.hasMoved = false;
         if (armRef.current) armRef.current.classList.add('is-dragging');
-        e.target.setPointerCapture(e.pointerId);
+        if (e.target && e.target.setPointerCapture) {
+            e.target.setPointerCapture(e.pointerId);
+        }
     };
 
     const handlePointerMove = (e) => {
         const s = state.current;
         if (s.isDragging) {
-            const deltaX = e.clientX - s.startX;
-            if (Math.abs(deltaX) > 4) {
+            const dx = e.clientX - s.lastClientX;
+
+            if (Math.abs(dx) > 0.5) {
                 s.hasMoved = true;
             }
 
-            // Calculate instantaneous drag velocity in degrees/sec (negative angle change for rightward movement)
-            const dx = e.clientX - s.lastX;
-            s.velocity = -dx * 1.8; // Clean velocity scaling
-            s.lastX = e.clientX;
+            // Accumulate rotation directly from mouse delta
+            const sensitivity = 0.35;
+            s.dragRotation = Math.max(-65, Math.min(65, s.dragRotation - dx * sensitivity));
 
-            // Target rotation (Mouse RIGHT => card swings RIGHT towards mouse)
-            const sensitivity = 0.32;
-            s.targetRotation = Math.max(-65, Math.min(65, s.startRotation - deltaX * sensitivity));
+            // Track velocity as trailing average for release momentum
+            const now = performance.now();
+            const timeDelta = Math.max(now - s.lastMoveTime, 1);
+            const instantVel = (-dx / timeDelta) * 1000 * sensitivity; // deg/sec
+            s.velocity = s.velocity * 0.5 + instantVel * 0.5;
 
-            // Target tilt
+            s.lastClientX = e.clientX;
+            s.lastMoveTime = now;
+
+            // 3D tilt while dragging
             s.targetTiltX = -4;
-            s.targetTiltY = Math.max(-12, Math.min(12, -deltaX * 0.12));
+            s.targetTiltY = Math.max(-12, Math.min(12, -s.dragRotation * 0.18));
         } else {
             // Hover 3D tilt
             const card = cardRef.current;
@@ -186,14 +203,21 @@ export default function LanyardCard() {
         if (!s.isDragging) return;
         s.isDragging = false;
         if (armRef.current) armRef.current.classList.remove('is-dragging');
+        if (e.target && e.target.hasPointerCapture && e.target.hasPointerCapture(e.pointerId)) {
+            e.target.releasePointerCapture(e.pointerId);
+        }
 
         if (!s.hasMoved) {
             // Clicked without drag => trigger 360° spin
             triggerFull360Spin();
         } else {
-            // Release drag => pendulum spring back handles motion automatically!
-            s.targetTiltX = 0;
-            s.targetTiltY = 0;
+            // Release drag: handle pause before release and clamp max velocity for smooth swing back
+            const timeSinceLastMove = performance.now() - s.lastMoveTime;
+            if (timeSinceLastMove > 40) {
+                s.velocity = 0;
+            } else {
+                s.velocity = Math.max(-150, Math.min(150, s.velocity));
+            }
         }
     };
 
@@ -293,13 +317,13 @@ export default function LanyardCard() {
                         </div>
                     </div>
 
-                    {/* Metallic Gradient Banner Header */}
+                    {/* Gradient Banner Header */}
                     <div className="lanyard-banner"></div>
 
-                    {/* Avatar Ring & Status Dot */}
+                    {/* Avatar Ring overlapping banner */}
                     <div className="lanyard-avatar-wrapper">
                         <div className="avatar-gradient-ring">
-                            <div className="lanyard-avatar">
+                            <div className="lanyard-avatar" title="PHOTO">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
@@ -317,13 +341,13 @@ export default function LanyardCard() {
                     {/* Main Card Body Info */}
                     <div className="lanyard-info">
                         <h3 className="lanyard-name">Kishore K V</h3>
-                        <div className="lanyard-role-badge">Cybersecurity & Software Engineer</div>
+                        <div className="lanyard-role-badge">Cybersecurity • Networking</div>
 
-                        {/* Metadata Grid */}
+                        {/* Metadata Grid (2x2) */}
                         <div className="lanyard-meta-grid">
                             <div className="meta-box">
                                 <span className="meta-lbl">SPECIALTY</span>
-                                <span className="meta-val">Cybersecurity & IT</span>
+                                <span className="meta-val">Cybersecurity &amp; Networking</span>
                             </div>
                             <div className="meta-box">
                                 <span className="meta-lbl">LOCATION</span>
@@ -333,18 +357,18 @@ export default function LanyardCard() {
                                 </span>
                             </div>
                             <div className="meta-box">
-                                <span className="meta-lbl">EXPERIENCE</span>
-                                <span className="meta-val">B.Tech IT (CIT)</span>
+                                <span className="meta-lbl">EDUCATION</span>
+                                <span className="meta-val">B.Tech IT</span>
                             </div>
                             <div className="meta-box">
                                 <span className="meta-lbl">STATUS</span>
                                 <span className="meta-val status-active">
-                                    <span className="status-dot"></span> Active
+                                    <span className="status-dot"></span> Open to Work
                                 </span>
                             </div>
                         </div>
 
-                        {/* Bottom Barcode Section with Exact Heights Array */}
+                        {/* Bottom Barcode Section */}
                         <div className="lanyard-barcode-box">
                             <div className="barcode-bars-container">
                                 {barcodeBars.map((bar, idx) => (
@@ -356,8 +380,8 @@ export default function LanyardCard() {
                                 ))}
                             </div>
                             <div className="barcode-labels-row">
-                                <span className="code-id">KV-89240-PRO</span>
-                                <span className="brand-id">LIGHTSWIND UI</span>
+                                <span className="code-id">KKV-2026</span>
+                                <span className="brand-id">KISHORE.KV</span>
                             </div>
                         </div>
                     </div>

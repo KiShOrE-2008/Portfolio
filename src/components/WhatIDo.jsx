@@ -59,6 +59,7 @@ export default function WhatIDo() {
     return (
         <div ref={containerRef} className="what-i-do-section-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">02 // SERVICES</span>
                 <span className="section-eyebrow">SERVICES & CORE CAPABILITIES</span>
                 <h2 className="section-title">
                     What I <span className="gradient-text">Do</span>

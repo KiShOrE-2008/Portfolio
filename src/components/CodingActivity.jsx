@@ -202,6 +202,7 @@ export default function CodingActivity() {
         <div ref={activityRef} className="coding-activity-container-inner" style={{ width: '100%' }}>
             <section className="activity-container">
             <div className="section-header">
+                <span className="section-technical-tag">06 // ACTIVITY</span>
                 <h2 className="section-title">Coding & Contribution Activity</h2>
                 <div className="section-divider"></div>
             </div>

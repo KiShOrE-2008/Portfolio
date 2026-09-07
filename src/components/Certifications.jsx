@@ -122,6 +122,7 @@ export default function Certifications() {
     return (
         <div ref={certsRef} className="certs-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
+                <span className="section-technical-tag">08 // CERTIFICATIONS</span>
                 <h2 className="section-title">Licenses & Certifications</h2>
                 <div className="section-divider"></div>
             </div>

@@ -28,13 +28,12 @@ export default function Navbar({ activeSection, theme, onToggleTheme }) {
     return (
         <header className={`floating-navbar-wrapper ${isScrolled ? 'scrolled' : ''}`}>
             <div className="floating-nav-pill glass-panel">
-                {/* Logo Badge */}
-                <a href="#hero" className="pill-logo" onClick={handleLinkClick}>
-                    <span className="logo-badge">KV</span>
-                    <div className="logo-text">
-                        <span className="name">Kishore K V</span>
-                        <span className="subtext">PORTFOLIO</span>
-                    </div>
+                {/* Logo */}
+                <a href="#hero" className="nav-logo" id="navLogo" onClick={handleLinkClick}>
+                    <span className="logo-sym-open">&lt;</span>
+                    <span className="logo-name">Kishore</span>
+                    <span className="logo-ext">.kv</span>
+                    <span className="logo-sym-close">/&gt;</span>
                 </a>
 
                 {/* Center Links */}
