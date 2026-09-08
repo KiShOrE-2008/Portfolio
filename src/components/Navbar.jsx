@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Navbar({ activeSection, theme, onToggleTheme }) {
+export default function Navbar({ activeSection, theme, onToggleTheme, onOpenTerminal }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -89,8 +89,18 @@ export default function Navbar({ activeSection, theme, onToggleTheme }) {
                     </a>
                 </nav>
 
-                {/* Right Actions: Theme Toggle & Mobile Hamburger */}
+                {/* Right Actions: CLI Terminal, Theme Toggle & Mobile Hamburger */}
                 <div className="pill-actions">
+                    <button
+                        className="cli-nav-btn"
+                        onClick={onOpenTerminal}
+                        aria-label="Open Interactive CLI Terminal"
+                        title="Open Interactive Cyber Terminal (Ctrl + K)"
+                    >
+                        <span className="cli-icon">&gt;_</span>
+                        <span className="cli-label">CLI</span>
+                    </button>
+
                     <button
                         className="theme-toggle-btn"
                         onClick={onToggleTheme}

@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const certsData = [
     {
-        icon: '🐍',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
         authority: 'Cisco Networking Academy',
         date: 'May 2026',
         title: 'Python Essentials 2',
@@ -18,7 +18,7 @@ const certsData = [
         verifyUrl: 'https://www.skillrack.com/cert/608096/FYR'
     },
     {
-        icon: '🛡️',
+        icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/crowdsec.webp',
         authority: 'Forage / Mastercard',
         date: 'May 2026',
         title: 'Cybersecurity Job Simulation',
@@ -28,7 +28,7 @@ const certsData = [
         verifyUrl: 'https://www.skillrack.com/faces/resume.xhtml?id=553019&key=Kishore_k_v-2008'
     },
     {
-        icon: '🎯',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
         authority: 'HackerRank',
         date: 'Feb 2026',
         title: 'Python (Basic)',
@@ -38,7 +38,7 @@ const certsData = [
         verifyUrl: 'https://www.skillrack.com/faces/resume.xhtml?id=553019&key=Kishore_k_v-2008'
     },
     {
-        icon: '💻',
+        icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/kali-linux.webp',
         authority: 'Hack & Fix',
         date: 'Jan 2026',
         title: 'Cybersecurity Career Starter (CCSC)',
@@ -48,7 +48,7 @@ const certsData = [
         verifyUrl: 'https://www.skillrack.com/faces/resume.xhtml?id=553019&key=Kishore_k_v-2008'
     },
     {
-        icon: '🔒',
+        icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/cisco.webp',
         authority: 'Cisco',
         date: 'Dec 2025',
         title: 'Introduction to Cybersecurity',
@@ -58,7 +58,7 @@ const certsData = [
         verifyUrl: 'https://www.skillrack.com/faces/resume.xhtml?id=553019&key=Kishore_k_v-2008'
     },
     {
-        icon: '⚙️',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
         authority: 'Cisco',
         date: 'Jul 2025',
         title: 'Python Essentials 1',
@@ -68,7 +68,7 @@ const certsData = [
         verifyUrl: 'https://www.skillrack.com/cert/608000/XYD'
     },
     {
-        icon: '🎓',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg',
         authority: 'IIT Madras',
         date: 'Oct 2024',
         title: 'Artificial Intelligence & Data Science',
@@ -123,7 +123,7 @@ export default function Certifications() {
         <div ref={certsRef} className="certs-container-inner" style={{ width: '100%' }}>
             <div className="section-header">
                 <span className="section-technical-tag">08 // CERTIFICATIONS</span>
-                <h2 className="section-title">Licenses & Certifications</h2>
+                <h2 className="section-title">Licenses &amp; Certifications</h2>
                 <div className="section-divider"></div>
             </div>
 
@@ -133,7 +133,9 @@ export default function Certifications() {
                         <TiltCard className="cert-card tilt-card">
                             <div className="cert-header">
                                 <div className="cert-brand">
-                                    <span className="cert-icon">{cert.icon}</span>
+                                    <span className="cert-icon">
+                                        <img src={cert.icon} alt={cert.authority} width="24" height="24" style={{ objectFit: 'contain' }} />
+                                    </span>
                                     <span className="cert-authority">{cert.authority}</span>
                                 </div>
                                 <span className="cert-date">{cert.date}</span>
@@ -165,4 +167,3 @@ export default function Certifications() {
         </div>
     );
 }
-

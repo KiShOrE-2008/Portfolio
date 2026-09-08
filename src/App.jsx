@@ -17,6 +17,9 @@ import FloatingDock from './components/FloatingDock';
 import LightboxModal from './components/LightboxModal';
 import Preloader from './components/Preloader';
 import NetworkBackground from './components/NetworkBackground';
+import CyberTerminal from './components/CyberTerminal';
+import ProjectModal from './components/ProjectModal';
+import MouseTrailCursor from './components/MouseTrailCursor';
 
 export default function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +28,9 @@ export default function App() {
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+    const [selectedProject, setSelectedProject] = useState(null);
+
     const glowRef1 = useRef(null);
 
     // Apply theme data attribute to html element
@@ -35,6 +41,18 @@ export default function App() {
     const toggleTheme = () => {
         setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
     };
+
+    // Keyboard shortcut for Cyber Terminal (Ctrl + K / Cmd + K)
+    useEffect(() => {
+        const handleGlobalKeyDown = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                setIsTerminalOpen((prev) => !prev);
+            }
+        };
+        window.addEventListener('keydown', handleGlobalKeyDown);
+        return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+    }, []);
 
     // Scroll Progress Indicator Tracker
     useEffect(() => {
@@ -121,7 +139,12 @@ export default function App() {
             <div className="radial-glow glow-2" id="radialGlow2"></div>
 
             {/* Floating Glass Top Navbar */}
-            <Navbar activeSection={activeSection} theme={theme} onToggleTheme={toggleTheme} />
+            <Navbar
+                activeSection={activeSection}
+                theme={theme}
+                onToggleTheme={toggleTheme}
+                onOpenTerminal={() => setIsTerminalOpen(true)}
+            />
 
             {/* Main Content Sections */}
             <main>
@@ -157,7 +180,7 @@ export default function App() {
                 </ScrollSection>
 
                 <ScrollSection id="projects" className="projects-section">
-                    <Projects />
+                    <Projects onSelectProject={(p) => setSelectedProject(p)} />
                 </ScrollSection>
 
                 <ScrollSection id="activity" className="activity-section">
@@ -173,7 +196,10 @@ export default function App() {
             <Footer />
 
             {/* Floating Navigation Dock */}
-            <FloatingDock activeSection={activeSection} />
+            <FloatingDock
+                activeSection={activeSection}
+                onOpenTerminal={() => setIsTerminalOpen(true)}
+            />
 
             {/* Lightbox Modal */}
             <LightboxModal 
@@ -182,6 +208,23 @@ export default function App() {
                 currentImgIndex={currentImgIndex}
                 setCurrentImgIndex={setCurrentImgIndex}
             />
+
+            {/* Interactive Cyber CLI Terminal Modal */}
+            <CyberTerminal
+                isOpen={isTerminalOpen}
+                onClose={() => setIsTerminalOpen(false)}
+                theme={theme}
+                onToggleTheme={toggleTheme}
+            />
+
+            {/* Project Overview Detail Modal */}
+            <ProjectModal
+                project={selectedProject}
+                onClose={() => setSelectedProject(null)}
+            />
+
+            {/* Skiper UI (skiper61) Mouse Trail & Cursor Follower */}
+            <MouseTrailCursor />
         </div>
     );
 }

@@ -7,25 +7,25 @@ gsap.registerPlugin(ScrollTrigger);
 
 const servicesData = [
     {
-        icon: '🛡️',
+        icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/kali-linux.webp',
         title: 'Ethical Hacking & Security',
         desc: 'Performing vulnerability assessments, implementing secure PBKDF2 cryptography algorithms, auditing security configurations, and threat prevention.',
         badge: 'Security Architecture'
     },
     {
-        icon: '🌐',
+        icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/wireshark.webp',
         title: 'Network Traffic Analysis',
         desc: 'Analyzing packet captures with Wireshark, monitoring router bandwidth, inspecting network protocols, and building real-time administrative dashboards.',
         badge: 'Networking'
     },
     {
-        icon: '💻',
+        icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/react.webp',
         title: 'Software & Web Development',
         desc: 'Engineering fast, responsive React web applications with glassmorphic UIs, robust micro-interactions, clean state management, and modern UI/UX design systems.',
         badge: 'Full-Stack Web'
     },
     {
-        icon: '🤖',
+        icon: 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/arduino.webp',
         title: 'Smart IoT Systems',
         desc: 'Architecting automated hardware systems with Arduino microcontrollers, sensors, moisture detectors, and servo actuators for real-world automation.',
         badge: 'IoT & Hardware'
@@ -74,7 +74,9 @@ export default function WhatIDo() {
                 {servicesData.map((service, index) => (
                     <div key={index} className="service-card glass-panel">
                         <div className="service-card-top">
-                            <span className="service-icon">{service.icon}</span>
+                            <span className="service-icon">
+                                <img src={service.icon} alt={service.title} width="32" height="32" style={{ objectFit: 'contain' }} />
+                            </span>
                             <span className="service-badge">{service.badge}</span>
                         </div>
                         <h3 className="service-title">{service.title}</h3>

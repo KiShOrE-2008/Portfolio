@@ -137,7 +137,7 @@ export default function CodingActivity() {
             })
             .catch(() => {});
 
-        // Fetch live GitHub User details
+        // Fetch live GitHub User details & public repos for stars/languages
         fetch('https://api.github.com/users/KiShOrE-2008')
             .then((res) => res.ok ? res.json() : null)
             .then((data) => {
@@ -147,6 +147,48 @@ export default function CodingActivity() {
                         publicRepos: data.public_repos ?? prev.publicRepos,
                         followers: data.followers ?? prev.followers
                     }));
+                }
+            })
+            .catch(() => {});
+
+        fetch('https://api.github.com/users/KiShOrE-2008/repos?per_page=100')
+            .then((res) => res.ok ? res.json() : null)
+            .then((repos) => {
+                if (isMounted && Array.isArray(repos) && repos.length > 0) {
+                    const stars = repos.reduce((acc, r) => acc + (r.stargazers_count || 0), 0);
+                    const langCounts = {};
+                    repos.forEach((r) => {
+                        if (r.language) {
+                            langCounts[r.language] = (langCounts[r.language] || 0) + 1;
+                        }
+                    });
+                    const totalLangs = Object.values(langCounts).reduce((a, b) => a + b, 0);
+                    if (totalLangs > 0) {
+                        const langColors = {
+                            Python: '#3572A5',
+                            JavaScript: '#f7df1e',
+                            TypeScript: '#3178c6',
+                            HTML: '#e34c26',
+                            CSS: '#563d7c',
+                            C: '#555555',
+                            'C++': '#f34b7d',
+                            Java: '#b07219',
+                            Shell: '#89e051'
+                        };
+                        const parsedLangs = Object.entries(langCounts)
+                            .map(([name, count]) => ({
+                                name,
+                                percent: Number(((count / totalLangs) * 100).toFixed(1)),
+                                color: langColors[name] || '#00f28f'
+                            }))
+                            .sort((a, b) => b.percent - a.percent);
+
+                        setGithubStats((prev) => ({
+                            ...prev,
+                            totalStars: stars,
+                            languages: parsedLangs.length > 0 ? parsedLangs : prev.languages
+                        }));
+                    }
                 }
             })
             .catch(() => {});

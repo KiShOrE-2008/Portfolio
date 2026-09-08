@@ -53,6 +53,33 @@ export default function NetworkBackground() {
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseleave', handleMouseLeave);
 
+        // Mouse click ripple ping effect
+        const ripples = [];
+        const packets = [];
+
+        const handleClick = (e) => {
+            ripples.push({
+                x: e.clientX,
+                y: e.clientY,
+                radius: 5,
+                maxRadius: 220,
+                alpha: 0.9
+            });
+
+            // Spawn data packets from nearby nodes
+            particles.forEach((p) => {
+                const dist = Math.hypot(p.x - e.clientX, p.y - e.clientY);
+                if (dist < 200) {
+                    // Push node away slightly
+                    const angle = Math.atan2(p.y - e.clientY, p.x - e.clientX);
+                    p.vx += Math.cos(angle) * 2.5;
+                    p.vy += Math.sin(angle) * 2.5;
+                }
+            });
+        };
+
+        window.addEventListener('click', handleClick);
+
         // Particle class
         class Particle {
             constructor() {
@@ -78,10 +105,17 @@ export default function NetworkBackground() {
                 this.x += this.vx;
                 this.y += this.vy - deltaScroll;
 
+                // Friction damping
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+
+                if (Math.abs(this.vx) < 0.2) this.vx += (Math.random() - 0.5) * 0.1;
+                if (Math.abs(this.vy) < 0.2) this.vy += (Math.random() - 0.5) * 0.1;
+
                 // Bounce off left/right edges
                 if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
 
-                // Wrap top/bottom edges and disperse coordinates to prevent horizontal clustering
+                // Wrap top/bottom edges
                 if (this.y < 0) {
                     this.y = canvas.height - Math.random() * (canvas.height * 0.5);
                     this.x = Math.random() * canvas.width;
@@ -99,7 +133,6 @@ export default function NetworkBackground() {
                     if (dist < mouseRadius) {
                         const force = (mouseRadius - dist) / mouseRadius;
                         const angle = Math.atan2(dy, dx);
-                        // Gently nudge the particle
                         this.x += Math.cos(angle) * force * 1.2;
                         this.y += Math.sin(angle) * force * 1.2;
                     }
@@ -129,6 +162,24 @@ export default function NetworkBackground() {
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Draw click ripples
+            for (let rIdx = ripples.length - 1; rIdx >= 0; rIdx--) {
+                const r = ripples[rIdx];
+                r.radius += 4;
+                r.alpha -= 0.018;
+
+                if (r.alpha <= 0 || r.radius >= r.maxRadius) {
+                    ripples.splice(rIdx, 1);
+                    continue;
+                }
+
+                ctx.beginPath();
+                ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(0, 242, 143, ${r.alpha})`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+
             // Update & Draw particles
             particles.forEach((p) => {
                 p.update(deltaScroll);
@@ -145,17 +196,15 @@ export default function NetworkBackground() {
                     const dist = Math.hypot(dx, dy);
 
                     if (dist < connectionDistance) {
-                        // Opacity fades as distance increases
                         const opacity = (1 - dist / connectionDistance) * maxConnectionOpacity;
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(p2.x, p2.y);
 
-                        // Use a mild green connection if BOTH particles are green
                         if (p1.color.includes('34, 197, 94') && p2.color.includes('34, 197, 94')) {
                             ctx.strokeStyle = `rgba(34, 197, 94, ${opacity * 0.8})`;
                         } else {
-                            ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`; // Purple connection line
+                            ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`;
                         }
                         ctx.lineWidth = 0.9;
                         ctx.stroke();
@@ -169,11 +218,11 @@ export default function NetworkBackground() {
                     const dist = Math.hypot(dx, dy);
 
                     if (dist < mouseRadius) {
-                        const opacity = (1 - dist / mouseRadius) * 0.55; // Increased mouse connector line opacity
+                        const opacity = (1 - dist / mouseRadius) * 0.55;
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(mouse.x, mouse.y);
-                        ctx.strokeStyle = `rgba(56, 189, 248, ${opacity})`; // Cyan connector to mouse
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${opacity})`;
                         ctx.lineWidth = 1.1;
                         ctx.stroke();
                     }
@@ -190,6 +239,7 @@ export default function NetworkBackground() {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseleave', handleMouseLeave);
+            window.removeEventListener('click', handleClick);
             cancelAnimationFrame(animationFrameId);
         };
     }, [isMobile]);
