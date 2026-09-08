@@ -45,12 +45,15 @@ export default function LanyardCard() {
 
     // Physics State Refs (bypass React re-render churn for 120fps smoothness)
     const state = useRef({
-        rotation: 0,
-        tiltX: 0,
-        tiltY: 0,
+        rotation: -30,         // Initial swing offset on drop
+        tiltX: -12,
+        tiltY: 10,
         targetTiltX: 0,
         targetTiltY: 0,
-        velocity: 0,
+        velocity: 140,         // Initial pendulum momentum when landing
+        dropY: -320,           // Starts 320px above hanging position
+        dropVel: 0,            // Downward drop speed
+        isDropping: true,      // Entry drop phase flag
         isDragging: false,
         dragRotation: 0,       // Direct mouse-mapped rotation during drag
         lastClientX: 0,
@@ -77,58 +80,74 @@ export default function LanyardCard() {
             // Frame-rate independent smoothing factor
             const smooth = (factor, delta) => 1 - Math.pow(1 - factor, delta * 60);
 
-            if (s.isSpinning) {
-                s.spinProgress += dt / 1.1;
-                if (s.spinProgress >= 1) {
-                    s.isSpinning = false;
-                    s.spinProgress = 1;
-                    s.rotation = 0;
-                    s.velocity = 0;
-                } else {
-                    const eased = 1 - Math.pow(1 - s.spinProgress, 3);
-                    s.rotation = s.spinStartAngle + 360 * eased;
+            // Startup Drop-Down Physics (Card drops from above and bounces off ribbon strap tension)
+            if (s.isDropping) {
+                const gravity = 2200; // px/s^2
+                s.dropVel += gravity * dt;
+                s.dropY += s.dropVel * dt;
+
+                if (s.dropY >= 0) {
+                    s.dropY = 0;
+                    if (Math.abs(s.dropVel) > 60) {
+                        s.dropVel = -s.dropVel * 0.32; // Ribbon elastic bounce
+                        s.velocity += 140;             // Transfer drop impact into pendulum swing
+                    } else {
+                        s.dropVel = 0;
+                        s.isDropping = false;
+                    }
                 }
-                const tiltSmooth = smooth(0.12, dt);
-                s.tiltX += (0 - s.tiltX) * tiltSmooth;
-                s.tiltY += (0 - s.tiltY) * tiltSmooth;
-            } else if (s.isDragging) {
-                // Responsive tracking — card follows cursor closely during drag
-                const dragSmooth = smooth(0.85, dt);
+            }
+
+            if (s.isDragging) {
+                s.isDropping = false;
+                s.dropY = 0;
+
+                // Unconstrained 360° responsive drag tracking — card follows pointer freely around 360 degrees
+                const dragSmooth = smooth(0.95, dt);
                 s.rotation += (s.dragRotation - s.rotation) * dragSmooth;
 
-                const tiltSmooth = smooth(0.2, dt);
+                const rad = (s.rotation * Math.PI) / 180;
+                s.targetTiltX = -6 * Math.cos(rad);
+                s.targetTiltY = Math.max(-25, Math.min(25, -Math.sin(rad) * 25));
+
+                const tiltSmooth = smooth(0.3, dt);
                 s.tiltX += (s.targetTiltX - s.tiltX) * tiltSmooth;
                 s.tiltY += (s.targetTiltY - s.tiltY) * tiltSmooth;
             } else {
-                // Realistic Pendulum Physics (~2 second natural damped oscillation)
-                const k = 34;        // Natural spring frequency (~0.93 Hz, ~1 swing per second)
-                const damping = 2.8; // Damping coefficient so it swings smoothly for ~2 seconds
-                const force = -k * s.rotation - damping * s.velocity;
+                // Non-Linear 360° Gravitational Pendulum Dynamics (Applies to both free swing & click impulses)
+                const rad = (s.rotation * Math.PI) / 180;
+                const gravityTorque = -Math.sin(rad) * 450; // restoring acceleration pulling down towards bottom (0°, 360°, etc.)
+                const damping = 1.1;                        // air resistance damping for natural 360° swings
+
+                const force = gravityTorque - damping * s.velocity;
                 s.velocity += force * dt;
                 s.rotation += s.velocity * dt;
 
-                // Dynamic 3D tilt follows pendulum swing angle
-                s.targetTiltX = 0;
-                s.targetTiltY = Math.max(-10, Math.min(10, -s.rotation * 0.15));
+                // Dynamic 3D tilt adhering to 360° position and velocity
+                s.targetTiltX = Math.max(-15, Math.min(15, -Math.abs(Math.sin(rad)) * 14));
+                s.targetTiltY = Math.max(-25, Math.min(25, -Math.sin(rad) * 25 + s.velocity * 0.015));
 
-                if (Math.abs(s.rotation) < 0.05 && Math.abs(s.velocity) < 0.05) {
-                    s.rotation = 0;
+                // Settling check near stable bottom equilibrium
+                if (Math.abs(s.velocity) < 0.05 && Math.abs(Math.sin(rad)) < 0.005) {
+                    s.rotation = s.rotation % 360;
+                    if (Math.abs(s.rotation) < 2) s.rotation = 0;
                     s.velocity = 0;
+                    s.targetTiltX = 0;
                     s.targetTiltY = 0;
                 }
 
-                const tiltSmooth = smooth(0.18, dt);
+                const tiltSmooth = smooth(0.2, dt);
                 s.tiltX += (s.targetTiltX - s.tiltX) * tiltSmooth;
                 s.tiltY += (s.targetTiltY - s.tiltY) * tiltSmooth;
             }
 
             // Apply transforms
             if (armRef.current) {
-                armRef.current.style.transform = `rotate(${s.rotation}deg)`;
+                armRef.current.style.transform = `translate3d(0, ${s.dropY}px, 0) rotate(${s.rotation}deg)`;
             }
 
             if (cardRef.current) {
-                const shadowOffsetX = -s.rotation * 0.6;
+                const shadowOffsetX = -Math.sin((s.rotation * Math.PI) / 180) * 25;
                 cardRef.current.style.transform = `perspective(1000px) rotateX(${s.tiltX}deg) rotateY(${s.tiltY}deg)`;
                 cardRef.current.style.boxShadow = `${shadowOffsetX}px 25px 50px rgba(0, 0, 0, 0.45), 0 8px 20px rgba(0, 0, 0, 0.25)`;
             }
@@ -146,11 +165,13 @@ export default function LanyardCard() {
     // Pointer Handlers
     const handlePointerDown = (e) => {
         const s = state.current;
+        s.isDropping = false;
+        s.dropY = 0;
         s.isDragging = true;
         s.isSpinning = false;
         s.lastClientX = e.clientX;
         s.lastMoveTime = performance.now();
-        s.dragRotation = s.rotation; // Start from current position — no jump
+        s.dragRotation = s.rotation; // Start smoothly from current angle
         s.velocity = 0;
         s.hasMoved = false;
         if (armRef.current) armRef.current.classList.add('is-dragging');
@@ -168,22 +189,18 @@ export default function LanyardCard() {
                 s.hasMoved = true;
             }
 
-            // Accumulate rotation directly from mouse delta
-            const sensitivity = 0.35;
-            s.dragRotation = Math.max(-65, Math.min(65, s.dragRotation - dx * sensitivity));
+            // Continuous 360° unconstrained dragging with refined sensitivity
+            const sensitivity = 0.45;
+            s.dragRotation = s.dragRotation - dx * sensitivity;
 
-            // Track velocity as trailing average for release momentum
+            // Instantaneous velocity calculation for realistic 360° flick momentum
             const now = performance.now();
             const timeDelta = Math.max(now - s.lastMoveTime, 1);
             const instantVel = (-dx / timeDelta) * 1000 * sensitivity; // deg/sec
-            s.velocity = s.velocity * 0.5 + instantVel * 0.5;
+            s.velocity = s.velocity * 0.4 + instantVel * 0.6;
 
             s.lastClientX = e.clientX;
             s.lastMoveTime = now;
-
-            // 3D tilt while dragging
-            s.targetTiltX = -4;
-            s.targetTiltY = Math.max(-12, Math.min(12, -s.dragRotation * 0.18));
         } else {
             // Hover 3D tilt
             const card = cardRef.current;
@@ -193,8 +210,31 @@ export default function LanyardCard() {
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            s.targetTiltX = ((y - centerY) / centerY) * -10;
-            s.targetTiltY = ((x - centerX) / centerX) * 10;
+            s.targetTiltX = ((y - centerY) / centerY) * -12;
+            s.targetTiltY = ((x - centerX) / centerX) * 12;
+        }
+    };
+
+    const triggerFull360Spin = (e) => {
+        const s = state.current;
+        s.isSpinning = false;
+        
+        // Determine spin direction based on click position relative to card center
+        let direction = 1;
+        if (e && cardRef.current) {
+            const rect = cardRef.current.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            if (e.clientX < centerX) {
+                direction = -1;
+            }
+        }
+
+        // Impart a balanced free physics rotational momentum impulse (1250 deg/sec)
+        const impulse = 1250;
+        if (Math.abs(s.velocity) < 300) {
+            s.velocity = impulse * direction;
+        } else {
+            s.velocity += Math.sign(s.velocity || direction) * impulse * 0.7;
         }
     };
 
@@ -208,24 +248,17 @@ export default function LanyardCard() {
         }
 
         if (!s.hasMoved) {
-            // Clicked without drag => trigger 360° spin
-            triggerFull360Spin();
+            // Clicked without drag => trigger free 360° physics impulse spin
+            triggerFull360Spin(e);
         } else {
-            // Release drag: handle pause before release and clamp max velocity for smooth swing back
+            // Release drag: retain velocity momentum up to 1500 deg/sec
             const timeSinceLastMove = performance.now() - s.lastMoveTime;
-            if (timeSinceLastMove > 40) {
+            if (timeSinceLastMove > 80) {
                 s.velocity = 0;
             } else {
-                s.velocity = Math.max(-150, Math.min(150, s.velocity));
+                s.velocity = Math.max(-1500, Math.min(1500, s.velocity));
             }
         }
-    };
-
-    const triggerFull360Spin = () => {
-        const s = state.current;
-        s.isSpinning = true;
-        s.spinProgress = 0;
-        s.spinStartAngle = s.rotation;
     };
 
     const handleMouseLeave = () => {
