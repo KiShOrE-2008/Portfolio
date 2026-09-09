@@ -4237,8 +4237,24 @@ html[data-theme="light"] .dotted-bg-grid {
 .hero-ctas-row {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
     margin-bottom: 2.2rem;
+    flex-wrap: wrap;
+}
+
+.btn-resume-glow {
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    color: var(--accent-cyan, #06b6d4);
+    font-weight: 600;
+}
+
+.btn-resume-glow:hover {
+    background: rgba(6, 182, 212, 0.18);
+    border-color: var(--accent-cyan, #06b6d4);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    color: var(--text-main);
+    transform: translateY(-2px);
 }
 
 .btn-gradient-glow {
@@ -4483,6 +4499,14 @@ html[data-theme="dark"] .barcode-bars-container {
     align-items: center;
     justify-content: center;
     color: #94a3b8;
+    overflow: hidden;
+}
+
+.lanyard-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .lanyard-avatar svg {
@@ -6754,4 +6778,539 @@ html[data-theme="light"] .nav-logo:hover .logo-name {
     margin-left: -14px;
     border-color: #00f28f;
     background: rgba(0, 242, 143, 0.25);
+}
+
+/* ==========================================
+   Resume Modal & Network Telemetry Loader
+   ========================================== */
+.resume-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 7, 13, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: fadeInModal 0.25s ease-out;
+}
+
+.resume-modal-content {
+    width: 100%;
+    max-width: 920px;
+    height: 88vh;
+    max-height: 850px;
+    background: rgba(11, 16, 26, 0.96);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(6, 182, 212, 0.15);
+}
+
+.resume-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.8rem;
+    background: rgba(15, 23, 42, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.resume-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: var(--accent-cyan, #06b6d4);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #06b6d4;
+    box-shadow: 0 0 8px #06b6d4;
+    animation: pulseGlow 1.5s infinite;
+}
+
+.resume-modal-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.resume-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.resume-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 1.1rem;
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.resume-action-btn.primary {
+    background: linear-gradient(135deg, #06b6d4, #3b82f6);
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.4);
+}
+
+.resume-action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px rgba(6, 182, 212, 0.6);
+}
+
+.resume-action-btn.secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-main);
+}
+
+.resume-action-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(6, 182, 212, 0.4);
+    transform: translateY(-2px);
+}
+
+.resume-modal-close {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.resume-modal-close:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+/* Loading State Container */
+.resume-loading-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: radial-gradient(circle at center, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+}
+
+.network-loader-card {
+    width: 100%;
+    max-width: 580px;
+    padding: 2.2rem;
+    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.radar-spinner {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid rgba(6, 182, 212, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(6, 182, 212, 0.04);
+}
+
+.radar-sweep {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border-top: 2px solid #06b6d4;
+    animation: spin 1.2s linear infinite;
+}
+
+.radar-icon {
+    font-size: 1.8rem;
+}
+
+.loading-status-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.loading-status-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.network-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    width: 100%;
+    margin-top: 0.4rem;
+}
+
+.net-stat-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 0.6rem 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stat-lbl {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.stat-val {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.stat-val.cyan { color: #06b6d4; }
+.stat-val.green { color: #10b981; }
+.stat-val.purple { color: #a855f7; }
+
+.loader-progress-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.loader-progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.progress-percent {
+    font-family: var(--font-mono);
+    color: #06b6d4;
+}
+
+.loader-progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.loader-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4, #10b981);
+    border-radius: 9999px;
+    transition: width 0.15s ease-out;
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+}
+
+.network-log-box {
+    width: 100%;
+    background: #090d16;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: #06b6d4;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+}
+
+.log-prefix {
+    color: #10b981;
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+.skip-loading-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-muted);
+    padding: 0.4rem 0.9rem;
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.skip-loading-btn:hover {
+    color: #ffffff;
+    border-color: #06b6d4;
+    background: rgba(6, 182, 212, 0.1);
+}
+
+/* Resume PDF Viewer */
+.resume-viewer-body {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #0b0f19;
+}
+
+.pdf-embed-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.pdf-object-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.resume-fallback-view {
+    padding: 2.5rem;
+    max-width: 650px;
+    margin: 3rem auto;
+    text-align: center;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.fallback-header h3 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+}
+
+.fallback-header p {
+    color: #06b6d4;
+    font-weight: 600;
+}
+
+.fallback-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+}
+
+.fallback-section h4 {
+    color: #ffffff;
+    margin-bottom: 0.3rem;
+}
+
+.fallback-section p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.fallback-notice {
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px stroke rgba(6, 182, 212, 0.2);
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Resume Coming Soon Container */
+.resume-coming-soon-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: radial-gradient(circle at center, rgba(6, 182, 212, 0.08) 0%, rgba(10, 15, 26, 0.95) 80%);
+}
+
+.coming-soon-card {
+    width: 100%;
+    max-width: 640px;
+    padding: 2.5rem;
+    border-radius: 22px;
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+}
+
+.cs-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 1.1rem;
+    border-radius: 9999px;
+    background: rgba(139, 92, 246, 0.14);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    color: #a855f7;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.cs-pulse-ring {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #a855f7;
+    box-shadow: 0 0 10px #a855f7;
+    animation: pulseGlow 1.5s infinite;
+}
+
+.cs-title {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+}
+
+.cs-description {
+    font-size: 0.98rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0;
+}
+
+.cs-highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+    width: 100%;
+    margin-top: 0.4rem;
+}
+
+.cs-hl-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 1rem;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    text-align: left;
+}
+
+.cs-hl-icon {
+    font-size: 1.5rem;
+}
+
+.cs-hl-title {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.cs-hl-sub {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+.cs-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cs-footer-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.6rem 1.2rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cs-footer-note a {
+    color: #06b6d4;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.cs-footer-note a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    .network-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .cs-highlights-grid {
+        grid-template-columns: 1fr;
+    }
+    .cs-title {
+        font-size: 2.4rem;
+    }
+    .resume-modal-header {
+        padding: 1rem;
+    }
+    .resume-modal-content {
+        height: 92vh;
+        border-radius: 16px;
+    }
 }

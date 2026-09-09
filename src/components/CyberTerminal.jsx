@@ -13,7 +13,7 @@ const AVAILABLE_COMMANDS = [
     { cmd: 'download-resume', desc: 'Download Kishore\'s resume' },
 ];
 
-export default function CyberTerminal({ isOpen, onClose, theme, onToggleTheme }) {
+export default function CyberTerminal({ isOpen, onClose, theme, onToggleTheme, onOpenResume }) {
     const [inputVal, setInputVal] = useState('');
     const [history, setHistory] = useState([
         { type: 'system', text: '⚡ Kishore KV Cyber Security Terminal [v2.4.0]' },
@@ -162,9 +162,14 @@ export default function CyberTerminal({ isOpen, onClose, theme, onToggleTheme })
         } else if (lower === 'download-resume' || lower === 'resume') {
             newHist.push({
                 type: 'output',
-                text: '📄 Initiating resume download...'
+                text: '📄 Initiating secure resume viewer with network latency simulation...'
             });
-            window.open('https://github.com/KiShOrE-2008', '_blank');
+            if (onOpenResume) {
+                onOpenResume();
+                onClose();
+            } else {
+                window.open('/resume.pdf', '_blank');
+            }
         } else {
             newHist.push({
                 type: 'error',

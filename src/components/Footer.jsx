@@ -82,7 +82,7 @@ export default function Footer() {
                         <a href="https://www.linkedin.com/in/kishore-k-v-090491349/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn">
                             <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/linkedin.webp" alt="LinkedIn" width="18" height="18" style={{ objectFit: 'contain' }} />
                         </a>
-                        <a href="mailto:kv.kishorevijay@gmail.com" className="social-icon-btn" aria-label="Email">
+                        <a href="mailto:kv.kishorevijay@gmail.com" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Email">
                             <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/gmail.webp" alt="Email" width="18" height="18" style={{ objectFit: 'contain' }} />
                         </a>
                     </div>

@@ -19,6 +19,7 @@ import Preloader from './components/Preloader';
 import NetworkBackground from './components/NetworkBackground';
 import CyberTerminal from './components/CyberTerminal';
 import ProjectModal from './components/ProjectModal';
+import ResumeModal from './components/ResumeModal';
 import MouseTrailCursor from './components/MouseTrailCursor';
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
     const [scrollProgress, setScrollProgress] = useState(0);
     const [isTerminalOpen, setIsTerminalOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
+    const [isResumeOpen, setIsResumeOpen] = useState(false);
 
     const glowRef1 = useRef(null);
 
@@ -149,7 +151,7 @@ export default function App() {
             {/* Main Content Sections */}
             <main>
                 <ScrollSection id="hero" className="hero-section">
-                    <Hero />
+                    <Hero onOpenResume={() => setIsResumeOpen(true)} />
                 </ScrollSection>
 
                 {/* Continuous Infinite Tech Marquee Ticker */}
@@ -215,12 +217,19 @@ export default function App() {
                 onClose={() => setIsTerminalOpen(false)}
                 theme={theme}
                 onToggleTheme={toggleTheme}
+                onOpenResume={() => setIsResumeOpen(true)}
             />
 
             {/* Project Overview Detail Modal */}
             <ProjectModal
                 project={selectedProject}
                 onClose={() => setSelectedProject(null)}
+            />
+
+            {/* Resume Viewer Modal with Simulated Network Transmission */}
+            <ResumeModal
+                isOpen={isResumeOpen}
+                onClose={() => setIsResumeOpen(false)}
             />
 
             {/* Skiper UI (skiper61) Mouse Trail & Cursor Follower */}
