@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Navbar({ activeSection, theme, onToggleTheme, onOpenTerminal }) {
+export default function Navbar({ activeSection, onOpenTerminal }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -99,15 +99,6 @@ export default function Navbar({ activeSection, theme, onToggleTheme, onOpenTerm
                     >
                         <span className="cli-icon">&gt;_</span>
                         <span className="cli-label">CLI</span>
-                    </button>
-
-                    <button
-                        className="theme-toggle-btn"
-                        onClick={onToggleTheme}
-                        aria-label="Toggle Light/Dark Theme"
-                        title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-                    >
-                        {theme === 'dark' ? '☀️' : '🌙'}
                     </button>
 
                     <button

@@ -9,7 +9,6 @@ const AVAILABLE_COMMANDS = [
     { cmd: 'whoami', desc: 'Check visitor session details' },
     { cmd: 'contact', desc: 'Get direct contact info & socials' },
     { cmd: 'clear', desc: 'Clear the terminal output' },
-    { cmd: 'theme', desc: 'Toggle light / dark color mode' },
     { cmd: 'download-resume', desc: 'Download Kishore\'s resume' },
 ];
 
@@ -109,7 +108,7 @@ function LineByLineOutput({ lines, text, isLatest, lineSpeed = 22, onType }) {
     );
 }
 
-export default function CyberTerminal({ isOpen, onClose, theme, onToggleTheme, onOpenResume }) {
+export default function CyberTerminal({ isOpen, onClose, onOpenResume }) {
     const [inputVal, setInputVal] = useState('');
     const [isAutoTyping, setIsAutoTyping] = useState(false);
     const [history, setHistory] = useState([
@@ -274,11 +273,10 @@ export default function CyberTerminal({ isOpen, onClose, theme, onToggleTheme, o
                 ]
             });
         } else if (lower === 'theme') {
-            onToggleTheme();
             newHist.push({
                 id: outputId,
                 type: 'output',
-                text: `Color theme toggled to: ${theme === 'dark' ? 'LIGHT' : 'DARK'} mode.`
+                text: '🌙 Portfolio is permanently locked to Cyber Dark Mode.'
             });
         } else if (lower === 'download-resume' || lower === 'resume') {
             newHist.push({

@@ -18,31 +18,28 @@ import LightboxModal from './components/LightboxModal';
 import Preloader from './components/Preloader';
 import NetworkBackground from './components/NetworkBackground';
 import CyberTerminal from './components/CyberTerminal';
-import ProjectModal from './components/ProjectModal';
 import ResumeModal from './components/ResumeModal';
+import ExperienceModal from './components/ExperienceModal';
+import ProjectModal from './components/ProjectModal';
 import MouseTrailCursor from './components/MouseTrailCursor';
 
 export default function App() {
     const [isLoading, setIsLoading] = useState(true);
-    const [theme, setTheme] = useState('dark');
     const [activeSection, setActiveSection] = useState('hero');
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [isTerminalOpen, setIsTerminalOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
+    const [selectedExperience, setSelectedExperience] = useState(null);
     const [isResumeOpen, setIsResumeOpen] = useState(false);
 
     const glowRef1 = useRef(null);
 
-    // Apply theme data attribute to html element
+    // Apply dark theme attribute permanently to html element
     useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-    }, [theme]);
-
-    const toggleTheme = () => {
-        setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-    };
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }, []);
 
     // Keyboard shortcut for Cyber Terminal (Ctrl + K / Cmd + K)
     useEffect(() => {
@@ -122,7 +119,7 @@ export default function App() {
     };
 
     return (
-        <div className={`app-container ${theme}-theme`}>
+        <div className="app-container dark-theme">
             {/* Top Scroll Progress Indicator */}
             <div
                 className="top-scroll-progress-bar"
@@ -143,8 +140,6 @@ export default function App() {
             {/* Floating Glass Top Navbar */}
             <Navbar
                 activeSection={activeSection}
-                theme={theme}
-                onToggleTheme={toggleTheme}
                 onOpenTerminal={() => setIsTerminalOpen(true)}
             />
 
@@ -170,7 +165,10 @@ export default function App() {
                 </ScrollSection>
 
                 <ScrollSection id="experience" className="experience-section">
-                    <Experience onOpenLightbox={handleOpenLightbox} />
+                    <Experience 
+                        onOpenLightbox={handleOpenLightbox} 
+                        onSelectExperience={(exp) => setSelectedExperience(exp)}
+                    />
                 </ScrollSection>
 
                 <ScrollSection id="skills" className="skills-section">
@@ -215,8 +213,6 @@ export default function App() {
             <CyberTerminal
                 isOpen={isTerminalOpen}
                 onClose={() => setIsTerminalOpen(false)}
-                theme={theme}
-                onToggleTheme={toggleTheme}
                 onOpenResume={() => setIsResumeOpen(true)}
             />
 
@@ -224,6 +220,13 @@ export default function App() {
             <ProjectModal
                 project={selectedProject}
                 onClose={() => setSelectedProject(null)}
+            />
+
+            {/* Experience Detailed View Modal */}
+            <ExperienceModal
+                exp={selectedExperience}
+                onClose={() => setSelectedExperience(null)}
+                onOpenGallery={handleOpenLightbox}
             />
 
             {/* Resume Viewer Modal with Simulated Network Transmission */}

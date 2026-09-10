@@ -39,7 +39,6 @@ export default function MouseTrailCursor() {
                 target.closest('.fixed-pivot-pin') ||
                 target.closest('.chip-btn') ||
                 target.closest('.filter-pill-btn') ||
-                target.closest('.theme-toggle-btn') ||
                 target.closest('.cli-nav-btn')
             ) {
                 setIsHovered(true);
