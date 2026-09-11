@@ -9,16 +9,15 @@ const NETWORK_LOGS = [
     { text: '✅ PDF rendering engine ready. Opening document...', delay: 2800 }
 ];
 
+let globalResumeLoadedOnce = false;
+
 export default function ResumeModal({ isOpen, onClose }) {
-    const [isLoading, setIsLoading] = useState(true);
-    const [progress, setProgress] = useState(0);
-    const [currentLogIdx, setCurrentLogIdx] = useState(0);
+    const [isLoading, setIsLoading] = useState(!globalResumeLoadedOnce);
+    const [step, setStep] = useState(0);
 
     useEffect(() => {
         if (!isOpen) {
-            setIsLoading(true);
-            setProgress(0);
-            setCurrentLogIdx(0);
+            setStep(0);
             return;
         }
 
@@ -32,48 +31,44 @@ export default function ResumeModal({ isOpen, onClose }) {
         };
         window.addEventListener('keydown', handleKeyDown);
 
-        // Progress bar simulation
-        const progressInterval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(progressInterval);
-                    return 100;
-                }
-                const increment = Math.floor(Math.random() * 8) + 5;
-                return Math.min(prev + increment, 100);
-            });
-        }, 110);
-
-        // Log messages sequence
-        const logTimeouts = NETWORK_LOGS.map((item, idx) => {
-            return setTimeout(() => {
-                setCurrentLogIdx(idx);
-            }, item.delay);
-        });
-
-        // Finish loading after sequence completes
-        const finishTimeout = setTimeout(() => {
+        if (globalResumeLoadedOnce) {
             setIsLoading(false);
-        }, 3100);
+            return () => {
+                window.removeEventListener('keydown', handleKeyDown);
+                document.body.style.overflow = '';
+            };
+        }
+
+        // Cinematic boot timeline
+        setIsLoading(true);
+        setStep(0);
+
+        const t1 = setTimeout(() => setStep(1), 800);
+        const t2 = setTimeout(() => setStep(2), 1600);
+        const t3 = setTimeout(() => setStep(3), 2400);
+        const t4 = setTimeout(() => {
+            setIsLoading(false);
+            globalResumeLoadedOnce = true;
+        }, 2800);
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             document.body.style.overflow = '';
-            clearInterval(progressInterval);
-            logTimeouts.forEach(clearTimeout);
-            clearTimeout(finishTimeout);
+            clearTimeout(t1);
+            clearTimeout(t2);
+            clearTimeout(t3);
+            clearTimeout(t4);
         };
     }, [isOpen, onClose]);
 
     if (!isOpen) return null;
 
     const handleSkipLoading = () => {
-        setProgress(100);
+        globalResumeLoadedOnce = true;
         setIsLoading(false);
     };
 
     const googleDrivePdfUrl = "https://drive.google.com/file/d/1LpFQf1ZFo2qCCrvEs9S6gC0UpxInKXOY/view?usp=sharing";
-    const googleDrivePreviewUrl = "https://drive.google.com/file/d/1LpFQf1ZFo2qCCrvEs9S6gC0UpxInKXOY/preview";
 
     return (
         <div className="resume-modal-overlay" onClick={onClose}>
@@ -90,7 +85,6 @@ export default function ResumeModal({ isOpen, onClose }) {
 
                     {/* Header Actions */}
                     <div className="resume-header-actions">
-
                         <a
                             href={googleDrivePdfUrl}
                             target="_blank"
@@ -111,65 +105,76 @@ export default function ResumeModal({ isOpen, onClose }) {
                     </div>
                 </div>
 
-                {/* Body Content: Loading Animation OR Embedded PDF Viewer */}
+                {/* Body Content: Cinematic Secure Document Retrieval Sequence OR Embedded PDF Viewer */}
                 {isLoading ? (
                     <div className="resume-loading-container">
-                        <div className="network-loader-card glass-panel">
-                            <div className="radar-spinner">
-                                <div className="radar-sweep"></div>
-                                <div className="radar-icon">📡</div>
+                        <div className="hud-cinematic-card glass-panel">
+                            {/* HUD Tag */}
+                            <div className="hud-badge-header">
+                                <span className="hud-pulse-dot"></span>
+                                <span>RESUME ACCESS</span>
                             </div>
 
-                            <h3 className="loading-status-title">Simulating Network Packet Transmission</h3>
-                            <p className="loading-status-desc">
-                                Fetching encrypted PDF payload from Kishore's secure node. Simulating network latency &amp; TLS verification...
-                            </p>
-
-                            <div className="network-stats-grid">
-                                <div className="net-stat-box">
-                                    <span className="stat-lbl">LATENCY</span>
-                                    <span className="stat-val cyan">14.2 ms</span>
-                                </div>
-                                <div className="net-stat-box">
-                                    <span className="stat-lbl">PACKET LOSS</span>
-                                    <span className="stat-val green">0.00%</span>
-                                </div>
-                                <div className="net-stat-box">
-                                    <span className="stat-lbl">PROTOCOL</span>
-                                    <span className="stat-val purple">TLS 1.3 / HTTP/3</span>
-                                </div>
-                                <div className="net-stat-box">
-                                    <span className="stat-lbl">INTEGRITY</span>
-                                    <span className="stat-val green">VERIFIED</span>
-                                </div>
+                            {/* Center Icon & Stage */}
+                            <div className="hud-icon-stage">
+                                {step === 0 && (
+                                    <div className="hud-node-circle cyan-pulse key-step-0">
+                                        <span className="node-center-dot"></span>
+                                    </div>
+                                )}
+                                {step === 1 && (
+                                    <div className="hud-node-circle purple-pulse key-step-1">
+                                        <svg className="node-file-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                                            <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#06b6d4" fill="rgba(6,182,212,0.12)" />
+                                            <path d="M14 2V8H20" stroke="#06b6d4" />
+                                            <path d="M8 13H16" stroke="#06b6d4" strokeLinecap="round" />
+                                            <path d="M8 17H13" stroke="#06b6d4" strokeLinecap="round" />
+                                        </svg>
+                                    </div>
+                                )}
+                                {(step === 2 || step === 3) && (
+                                    <div className="hud-node-circle green-pulse key-step-2">
+                                        <svg className="node-check-svg" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                )}
                             </div>
 
-                            <div className="loader-progress-wrapper">
-                                <div className="loader-progress-info">
-                                    <span className="progress-label">Downloading PDF Payload...</span>
-                                    <span className="progress-percent">{progress}%</span>
+                            {/* Status Title */}
+                            <div className="hud-status-wrapper">
+                                <h3 className="hud-status-title">
+                                    {step === 0 && "INITIALIZING"}
+                                    {step === 1 && "CONNECTING TO DOCUMENT"}
+                                    {step === 2 && "VERIFYING RESUME"}
+                                    {step === 3 && "RESUME READY"}
+                                </h3>
+
+                                {/* Data Signal Line Animation */}
+                                <div className="hud-signal-line-container">
+                                    <div className="hud-signal-track"></div>
+                                    <div className={`hud-signal-fill step-${step}`}></div>
+                                    <div className={`hud-signal-dot step-${step}`}></div>
                                 </div>
-                                <div className="loader-progress-bar-bg">
-                                    <div
-                                        className="loader-progress-bar-fill"
-                                        style={{ width: `${progress}%` }}
-                                    ></div>
-                                </div>
+
+                                <p className="hud-status-subtext">
+                                    {step === 0 && "ESTABLISHING SECURE CHANNEL"}
+                                    {step === 1 && "DOCUMENT FOUND"}
+                                    {step === 2 && "DOCUMENT VERIFIED"}
+                                    {step === 3 && "OPENING DOCUMENT"}
+                                </p>
                             </div>
 
-                            <div className="network-log-box">
-                                <div className="log-line active">
-                                    <span className="log-prefix">&gt;</span> {NETWORK_LOGS[currentLogIdx]?.text}
-                                </div>
+                            {/* Minimalist Bottom Bar */}
+                            <div className="hud-footer">
+                                <button className="skip-hud-btn" onClick={handleSkipLoading}>
+                                    Skip &rarr;
+                                </button>
                             </div>
-
-                            <button className="skip-loading-btn" onClick={handleSkipLoading}>
-                                Skip Transmission &amp; Load PDF ⚡
-                            </button>
                         </div>
                     </div>
                 ) : (
-                    <div className="pdf-embed-container">
+                    <div className="pdf-embed-container cinematic-reveal">
                         <iframe
                             src="/resume.pdf#toolbar=1&navpanes=0&scrollbar=1"
                             className="resume-pdf-iframe"

@@ -6637,97 +6637,216 @@ html[data-theme="light"] .footer-ambient-banner {
     background: radial-gradient(circle at center, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
 }
 
-.network-loader-card {
+/* Cinematic Secure Document Retrieval Card */
+.hud-cinematic-card {
     width: 100%;
-    max-width: 580px;
-    padding: 2.2rem;
-    border-radius: 20px;
-    background: rgba(15, 23, 42, 0.85);
-    border: 1px solid rgba(6, 182, 212, 0.25);
+    max-width: 440px;
+    padding: 2.2rem 2.4rem;
+    border-radius: 24px;
+    background: rgba(13, 17, 23, 0.92);
+    border: 1px solid rgba(6, 182, 212, 0.2);
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.2rem;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    gap: 1.5rem;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+    position: relative;
+    overflow: hidden;
 }
 
-.radar-spinner {
-    position: relative;
-    width: 72px;
-    height: 72px;
+.hud-badge-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #06b6d4;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+}
+
+.hud-pulse-dot {
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    border: 2px solid rgba(6, 182, 212, 0.2);
+    background: #06b6d4;
+    box-shadow: 0 0 8px #06b6d4;
+    animation: hudDotPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes hudDotPulse {
+    0% { opacity: 0.4; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Stage Icon Container */
+.hud-icon-stage {
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(6, 182, 212, 0.04);
 }
 
-.radar-sweep {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.hud-node-circle {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    border-top: 2px solid #06b6d4;
-    animation: spin 1.2s linear infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.9);
+    position: relative;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-.radar-icon {
-    font-size: 1.8rem;
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.7); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
-.loading-status-title {
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0;
+.hud-node-circle.cyan-pulse {
+    border: 1.5px solid rgba(6, 182, 212, 0.5);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
 }
 
-.loading-status-desc {
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    margin: 0;
-    line-height: 1.5;
+.hud-node-circle.purple-pulse {
+    border: 1.5px solid rgba(168, 85, 247, 0.5);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
 }
 
-.network-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.6rem;
+.hud-node-circle.green-pulse {
+    border: 1.5px solid rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+}
+
+.node-center-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #06b6d4;
+    box-shadow: 0 0 12px #06b6d4;
+}
+
+.node-file-svg, .node-check-svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* Status Text & Data Line */
+.hud-status-wrapper {
     width: 100%;
-    margin-top: 0.4rem;
-}
-
-.net-stat-box {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    padding: 0.6rem 0.4rem;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    align-items: center;
+    gap: 0.8rem;
 }
 
-.stat-lbl {
-    font-size: 0.65rem;
+.hud-status-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
     font-weight: 700;
-    color: var(--text-muted);
     letter-spacing: 0.05em;
+    color: #ffffff;
+    margin: 0;
+    transition: opacity 0.3s ease;
 }
 
-.stat-val {
+.hud-signal-line-container {
+    width: 100%;
+    height: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.hud-signal-track {
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+}
+
+.hud-signal-fill {
+    position: absolute;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #06b6d4, #a855f7, #10b981);
+    border-radius: 2px;
+    transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hud-signal-fill.step-0 { width: 25%; }
+.hud-signal-fill.step-1 { width: 60%; }
+.hud-signal-fill.step-2 { width: 90%; }
+.hud-signal-fill.step-3 { width: 100%; }
+
+.hud-signal-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #06b6d4;
+    box-shadow: 0 0 10px #06b6d4;
+    transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(-50%);
+    top: 50%;
+}
+
+.hud-signal-dot.step-0 { left: 25%; }
+.hud-signal-dot.step-1 { left: 60%; }
+.hud-signal-dot.step-2 { left: 90%; }
+.hud-signal-dot.step-3 { left: 98%; opacity: 0; }
+
+.hud-status-subtext {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin: 0;
+    transition: opacity 0.3s ease;
 }
 
-.stat-val.cyan { color: #06b6d4; }
-.stat-val.green { color: #10b981; }
-.stat-val.purple { color: #a855f7; }
+.hud-footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.skip-hud-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.skip-hud-btn:hover {
+    color: #06b6d4;
+}
+
+/* PDF Embed Cinematic Reveal Animation */
+.pdf-embed-container.cinematic-reveal {
+    animation: cinematicReveal 0.5s ease-out forwards;
+}
+
+@keyframes cinematicReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.985);
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+    }
+}
 
 .loader-progress-wrapper {
     width: 100%;

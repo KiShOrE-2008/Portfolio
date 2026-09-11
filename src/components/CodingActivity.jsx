@@ -80,7 +80,8 @@ export default function CodingActivity() {
         ranking: 275163,
         contestRating: 1555,
         topPercentage: '31.61%',
-        attendedContests: 23
+        attendedContests: 23,
+        totalParticipants: 881221
     });
 
     const [githubStats, setGithubStats] = useState({
@@ -102,7 +103,43 @@ export default function CodingActivity() {
         ]
     });
 
-    const contestHistory = [
+    // Helper: transform API contest participation into graph-ready points
+    const transformContestData = (participation) => {
+        if (!participation || participation.length === 0) return [];
+        const sorted = [...participation].sort((a, b) => a.contest.startTime - b.contest.startTime);
+        const ratings = sorted.map((c) => Math.round(c.rating));
+        const minRating = Math.min(...ratings);
+        const maxRating = Math.max(...ratings);
+        const ratingRange = maxRating - minRating || 1;
+        const peakRating = maxRating;
+        const SVG_WIDTH = 700;
+        const SVG_PADDING = 25;
+        const SVG_Y_TOP = 20;
+        const SVG_Y_BOTTOM = 130;
+        const usableWidth = SVG_WIDTH - SVG_PADDING * 2;
+        const count = sorted.length;
+
+        return sorted.map((c, i) => {
+            const x = count === 1 ? SVG_WIDTH / 2 : SVG_PADDING + (i / (count - 1)) * usableWidth;
+            const y = SVG_Y_TOP + ((maxRating - Math.round(c.rating)) / ratingRange) * (SVG_Y_BOTTOM - SVG_Y_TOP);
+            const contestDate = new Date(c.contest.startTime * 1000);
+            const dateStr = contestDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+            return {
+                x: Math.round(x * 10) / 10,
+                y: Math.round(y * 10) / 10,
+                rating: Math.round(c.rating),
+                date: dateStr,
+                name: c.contest.title,
+                rank: c.ranking.toLocaleString(),
+                solved: `${c.problemsSolved} / ${c.totalProblems}`,
+                trend: c.trendDirection === 'UP' ? 'up' : 'down',
+                isPeak: Math.round(c.rating) === peakRating
+            };
+        });
+    };
+
+    // Fallback hardcoded contest history (used until API responds)
+    const [contestHistory, setContestHistory] = useState([
         { x: 25, y: 76, rating: 1500, date: 'Mar 16, 2025', name: 'Weekly Contest 441', rank: '18,450', solved: '2 / 4', trend: 'up' },
         { x: 75, y: 94, rating: 1465, date: 'Apr 06, 2025', name: 'Biweekly Contest 153', rank: '21,200', solved: '1 / 4', trend: 'down' },
         { x: 125, y: 74, rating: 1505, date: 'May 18, 2025', name: 'Weekly Contest 450', rank: '16,800', solved: '2 / 4', trend: 'up' },
@@ -117,7 +154,7 @@ export default function CodingActivity() {
         { x: 575, y: 32, rating: 1586, date: 'Feb 15, 2026', name: 'Biweekly Contest 175', rank: '11,800', solved: '3 / 4', trend: 'up', isPeak: true },
         { x: 625, y: 65, rating: 1522, date: 'Aug 02, 2026', name: 'Weekly Contest 513', rank: '15,202', solved: '2 / 4', trend: 'down' },
         { x: 675, y: 48, rating: 1555, date: 'Aug 30, 2026', name: 'Weekly Contest 517', rank: '13,500', solved: '3 / 4', trend: 'up' }
-    ];
+    ]);
 
     useEffect(() => {
         let isMounted = true;
@@ -133,6 +170,31 @@ export default function CodingActivity() {
                         mediumSolved: data.mediumSolved || prev.mediumSolved,
                         hardSolved: data.hardSolved || prev.hardSolved
                     }));
+                }
+            })
+            .catch(() => {});
+
+        // Fetch live LeetCode contest data (rating, ranking, top%, contest history)
+        fetch('https://alfa-leetcode-api.onrender.com/Kishore2008/contest')
+            .then((res) => res.ok ? res.json() : null)
+            .then((data) => {
+                if (isMounted && data) {
+                    if (data.contestRating) {
+                        setLeetcodeData((prev) => ({
+                            ...prev,
+                            contestRating: Math.round(data.contestRating),
+                            ranking: data.contestGlobalRanking || prev.ranking,
+                            topPercentage: data.contestTopPercentage ? `${data.contestTopPercentage}%` : prev.topPercentage,
+                            attendedContests: data.contestAttend || prev.attendedContests,
+                            totalParticipants: data.totalParticipants || prev.totalParticipants
+                        }));
+                    }
+                    if (data.contestParticipation && data.contestParticipation.length > 0) {
+                        const transformed = transformContestData(data.contestParticipation);
+                        if (transformed.length > 0) {
+                            setContestHistory(transformed);
+                        }
+                    }
                 }
             })
             .catch(() => {});
@@ -214,8 +276,33 @@ export default function CodingActivity() {
     const hardPercentage = Number(((leetcodeData.hardSolved / 972) * 100).toFixed(1)) || 0.6;
     const totalProgressPercent = Number(((leetcodeData.solvedProblem / totalProblemsAvailable) * 100).toFixed(1)) || 6.2;
 
+    const activeContestPoint = hoveredContestIndex !== null && hoveredContestIndex < contestHistory.length ? contestHistory[hoveredContestIndex] : null;
 
-    const activeContestPoint = hoveredContestIndex !== null ? contestHistory[hoveredContestIndex] : null;
+    // Find peak contest point dynamically
+    const peakContestPoint = contestHistory.reduce((peak, point) => (!peak || point.rating > peak.rating) ? point : peak, null);
+
+    // Generate smooth cubic bezier SVG path from contest history points
+    const generateGraphPath = (points, closePath = false) => {
+        if (!points || points.length < 2) return '';
+        let d = `M ${points[0].x} ${points[0].y}`;
+        for (let i = 0; i < points.length - 1; i++) {
+            const cx = (points[i].x + points[i + 1].x) / 2;
+            d += ` C ${cx} ${points[i].y}, ${cx} ${points[i + 1].y}, ${points[i + 1].x} ${points[i + 1].y}`;
+        }
+        if (closePath) {
+            d += ` L ${points[points.length - 1].x} 135 L ${points[0].x} 135 Z`;
+        }
+        return d;
+    };
+
+    const graphFillPath = generateGraphPath(contestHistory, true);
+    const graphStrokePath = generateGraphPath(contestHistory, false);
+
+    // Determine year labels from contest data
+    const graphYears = contestHistory.length > 0 ? [
+        contestHistory[0].date.split(', ').pop(),
+        contestHistory[contestHistory.length - 1].date.split(', ').pop()
+    ] : ['2025', '2026'];
 
     // 100% Precise SVG coordinate calibration using BoundingClientRect & viewBox ratio
     const handleSvgMouseMove = (e) => {
@@ -572,15 +659,15 @@ export default function CodingActivity() {
                                                 <>
                                                     <div className="lc-graph-stat">
                                                         <span className="lc-graph-label">Contest Rating</span>
-                                                        <span className="lc-graph-value text-amber">1,555</span>
+                                                        <span className="lc-graph-value text-amber">{leetcodeData.contestRating.toLocaleString()}</span>
                                                     </div>
                                                     <div className="lc-graph-stat">
                                                         <span className="lc-graph-label">Global Ranking</span>
-                                                        <span className="lc-graph-value">275,163 <small>{"/ 881,221"}</small></span>
+                                                        <span className="lc-graph-value">{leetcodeData.ranking.toLocaleString()} {leetcodeData.totalParticipants ? <small>{`/ ${leetcodeData.totalParticipants.toLocaleString()}`}</small> : null}</span>
                                                     </div>
                                                     <div className="lc-graph-stat">
                                                         <span className="lc-graph-label">Attended</span>
-                                                        <span className="lc-graph-value">23</span>
+                                                        <span className="lc-graph-value">{leetcodeData.attendedContests}</span>
                                                     </div>
                                                 </>
                                             )}
@@ -611,15 +698,15 @@ export default function CodingActivity() {
                                                     style={{ pointerEvents: 'all' }}
                                                 />
 
-                                                {/* Silky Smooth Cubic Bezier Gradient Fill Area */}
+                                                {/* Dynamically Generated Cubic Bezier Gradient Fill Area */}
                                                 <path
-                                                    d="M 25 76 C 50 76, 50 94, 75 94 C 100 94, 100 74, 125 74 C 150 74, 150 104, 175 104 C 200 104, 200 115, 225 115 C 250 115, 250 110, 275 110 C 300 110, 300 107, 325 107 C 350 107, 350 112, 375 112 C 400 112, 400 102, 425 102 C 450 102, 450 76, 475 76 C 500 76, 500 53, 525 53 C 550 53, 550 32, 575 32 C 600 32, 600 65, 625 65 C 650 65, 650 48, 675 48 L 675 135 L 25 135 Z"
+                                                    d={graphFillPath}
                                                     fill="url(#amberGlow)"
                                                 />
 
-                                                {/* Silky Smooth Cubic Bezier Rating Stroke Curve */}
+                                                {/* Dynamically Generated Cubic Bezier Rating Stroke Curve */}
                                                 <path
-                                                    d="M 25 76 C 50 76, 50 94, 75 94 C 100 94, 100 74, 125 74 C 150 74, 150 104, 175 104 C 200 104, 200 115, 225 115 C 250 115, 250 110, 275 110 C 300 110, 300 107, 325 107 C 350 107, 350 112, 375 112 C 400 112, 400 102, 425 102 C 450 102, 450 76, 475 76 C 500 76, 500 53, 525 53 C 550 53, 550 32, 575 32 C 600 32, 600 65, 625 65 C 650 65, 650 48, 675 48"
+                                                    d={graphStrokePath}
                                                     fill="none"
                                                     stroke="#f59e0b"
                                                     strokeWidth="2.8"
@@ -627,14 +714,16 @@ export default function CodingActivity() {
                                                     strokeLinejoin="round"
                                                 />
 
-                                                {/* Static Peak point white dot */}
-                                                <circle cx="575" cy="32" r="4.5" fill="#ffffff" stroke="#f59e0b" strokeWidth="2" />
+                                                {/* Dynamic Peak point white dot */}
+                                                {peakContestPoint && (
+                                                    <circle cx={peakContestPoint.x} cy={peakContestPoint.y} r="4.5" fill="#ffffff" stroke="#f59e0b" strokeWidth="2" />
+                                                )}
 
-                                                {/* Static Peak rating tooltip badge */}
-                                                {!activeContestPoint && (
-                                                    <g transform="translate(550, 44)">
+                                                {/* Dynamic Peak rating tooltip badge */}
+                                                {!activeContestPoint && peakContestPoint && (
+                                                    <g transform={`translate(${Math.max(10, Math.min(640, peakContestPoint.x - 25))}, ${peakContestPoint.y + 12})`}>
                                                         <rect x="0" y="0" width="50" height="24" rx="6" fill="rgba(15, 23, 42, 0.95)" stroke="rgba(245, 158, 11, 0.4)" />
-                                                        <text x="25" y="16" textAnchor="middle" fill="#fef08a" fontSize="11" fontWeight="700">1,586</text>
+                                                        <text x="25" y="16" textAnchor="middle" fill="#fef08a" fontSize="11" fontWeight="700">{peakContestPoint.rating.toLocaleString()}</text>
                                                     </g>
                                                 )}
 
@@ -683,9 +772,11 @@ export default function CodingActivity() {
                                                     </g>
                                                 )}
 
-                                                {/* X Axis Years */}
-                                                <text x="25" y="142" fill="#94a3b8" fontSize="12" fontWeight="500">2025</text>
-                                                <text x="675" y="142" textAnchor="end" fill="#94a3b8" fontSize="12" fontWeight="500">2026</text>
+                                                {/* X Axis Years (dynamic) */}
+                                                <text x="25" y="142" fill="#94a3b8" fontSize="12" fontWeight="500">{graphYears[0]}</text>
+                                                {graphYears[0] !== graphYears[1] && (
+                                                    <text x="675" y="142" textAnchor="end" fill="#94a3b8" fontSize="12" fontWeight="500">{graphYears[1]}</text>
+                                                )}
                                             </svg>
                                         </div>
                                     </div>
