@@ -118,8 +118,8 @@ export default function Projects({ onSelectProject }) {
             overflow: 'hidden',
         }}>
             <iframe
-                src="/landing-pages/complete-shelf-v2.html"
-                title="Working Volumes — Seven Tools for Making"
+                src="/landing-pages/project-archive.html"
+                title="Kishore — 3D Project Archive"
                 sandbox="allow-downloads allow-forms allow-modals allow-popups allow-same-origin allow-scripts"
                 loading="eager"
                 style={{
@@ -129,7 +129,7 @@ export default function Projects({ onSelectProject }) {
                     width: '100%',
                     height: '100%',
                     border: 0,
-                    background: '#080808',
+                    background: '#05080b',
                 }}
             />
         </div>
